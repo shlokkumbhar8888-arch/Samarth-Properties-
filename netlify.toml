@@ -1,0 +1,56 @@
+[build]
+  publish = "frontend"
+
+# ── Redirect /admin/* to the admin subfolder ─────────────────
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/:splat"
+  status = 200
+
+# ── Pretty URLs for pages ────────────────────────────────────
+[[redirects]]
+  from = "/projects"
+  to = "/pages/projects.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/pages/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/pages/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog"
+  to = "/pages/blog.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/pages/blog-detail.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects/*"
+  to = "/pages/project-detail.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

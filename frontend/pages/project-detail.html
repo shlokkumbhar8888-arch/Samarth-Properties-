@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Title & meta overwritten by project-detail.js once project data loads -->
+  <title>Project Details — Samarth Properties</title>
+  <meta name="description" content="Explore premium real estate projects by Samarth Properties in Pune.">
+  <meta name="robots" content="index, follow">
+
+  <!-- OG (overwritten by JS) -->
+  <meta property="og:title"       content="Project — Samarth Properties" id="og-title">
+  <meta property="og:description" content="Premium real estate in Pune." id="og-desc">
+  <meta property="og:type"        content="website">
+  <meta property="og:image"       content="../assets/images/og-image.jpg" id="og-image">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/project-detail.css">
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__inner">
+      <div class="page-loader__logo">SP</div>
+      <div class="page-loader__bar"><div class="page-loader__progress"></div></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div id="nav-placeholder"></div>
+
+  <main id="main-content">
+
+    <!-- ══════════════════════════════════════════════════════
+         PROJECT HERO — full-bleed gallery hero
+         ══════════════════════════════════════════════════════ -->
+    <section class="pd-hero" id="pd-hero" aria-label="Project hero">
+
+      <!-- Skeleton shown until data loads -->
+      <div class="pd-hero__skeleton" id="hero-skeleton" aria-hidden="true">
+        <div class="skeleton" style="width:100%;height:100%;border-radius:0;"></div>
+      </div>
+
+      <!-- Hero image (swapped by JS) -->
+      <div class="pd-hero__img-wrap" id="pd-hero-img" hidden>
+        <img id="hero-img" src="" alt="" class="pd-hero__img">
+        <div class="pd-hero__overlay" aria-hidden="true"></div>
+
+        <!-- Thumbnail strip (gallery preview) -->
+        <div class="pd-hero__thumb-strip" id="thumb-strip" aria-label="Project photos"></div>
+
+        <!-- Photo count badge -->
+        <button class="pd-hero__gallery-btn" id="gallery-open-btn" aria-label="View all photos" hidden>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span id="gallery-count"></span>
+        </button>
+      </div>
+
+      <!-- Project info overlay -->
+      <div class="pd-hero__info" id="pd-hero-info" hidden>
+        <div class="container pd-hero__info-inner">
+          <!-- Breadcrumb -->
+          <nav class="breadcrumb" aria-label="Breadcrumb" id="pd-breadcrumb">
+            <a href="../index.html" class="breadcrumb__item">Home</a>
+            <span class="breadcrumb__sep" aria-hidden="true">›</span>
+            <a href="projects.html" class="breadcrumb__item">Projects</a>
+            <span class="breadcrumb__sep" aria-hidden="true">›</span>
+            <span class="breadcrumb__item breadcrumb__item--active" id="bc-name" aria-current="page">Loading…</span>
+          </nav>
+
+          <div class="pd-hero__meta">
+            <div class="pd-hero__badges" id="pd-badges"></div>
+            <h1 class="pd-hero__title" id="pd-title">—</h1>
+            <p class="pd-hero__location" id="pd-location">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span></span>
+            </p>
+          </div>
+
+          <!-- Quick stats strip inside hero -->
+          <div class="pd-hero__quick-stats" id="pd-quick-stats"></div>
+
+          <!-- Share + compare actions -->
+          <div class="pd-hero__actions">
+            <button class="pd-action-btn" id="share-btn" aria-label="Share project">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Share
+            </button>
+            <button class="pd-action-btn compare-btn" id="pd-compare-btn" data-id="" data-name="" aria-label="Add to compare">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+              Compare
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         MAIN LAYOUT: CONTENT + STICKY SIDEBAR
+         ══════════════════════════════════════════════════════ -->
+    <div class="pd-layout container section" id="pd-layout" hidden>
+
+      <!-- ── LEFT: Tabbed content ─────────────────────────── -->
+      <div class="pd-content">
+
+        <!-- Tab navigation -->
+        <div class="pd-tabs" role="tablist" aria-label="Project information">
+          <button class="pd-tab pd-tab--active" role="tab" aria-selected="true"  aria-controls="tab-overview"    id="tab-btn-overview">Overview</button>
+          <button class="pd-tab"                role="tab" aria-selected="false" aria-controls="tab-floorplans"  id="tab-btn-floorplans">Floor Plans</button>
+          <button class="pd-tab"                role="tab" aria-selected="false" aria-controls="tab-gallery"     id="tab-btn-gallery">Gallery</button>
+          <button class="pd-tab"                role="tab" aria-selected="false" aria-controls="tab-amenities"   id="tab-btn-amenities">Amenities</button>
+          <button class="pd-tab"                role="tab" aria-selected="false" aria-controls="tab-location"    id="tab-btn-location">Location</button>
+        </div>
+
+        <!-- ── TAB: Overview ──────────────────────────────── -->
+        <div class="pd-tab-panel" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview">
+
+          <!-- Key details grid -->
+          <div class="pd-details-grid" id="pd-details-grid"></div>
+
+          <!-- Description -->
+          <div class="pd-section" id="pd-description-wrap">
+            <h2 class="pd-section__title">About This Project</h2>
+            <div class="pd-description" id="pd-description"></div>
+          </div>
+
+          <!-- Highlights -->
+          <div class="pd-section" id="pd-highlights-wrap" hidden>
+            <h2 class="pd-section__title">Project Highlights</h2>
+            <ul class="pd-highlights" id="pd-highlights"></ul>
+          </div>
+
+          <!-- RERA info -->
+          <div class="pd-rera-box" id="pd-rera-box" hidden>
+            <div class="pd-rera-box__icon" aria-hidden="true"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="11"/><path d="M3 10L12 3l9 7"/><line x1="9" y1="21" x2="9" y2="10"/><line x1="15" y1="21" x2="15" y2="10"/></svg></div>
+            <div>
+              <p class="pd-rera-box__label">RERA Registration Number</p>
+              <p class="pd-rera-box__number" id="pd-rera-number"></p>
+              <p class="pd-rera-box__note">This project is registered under MahaRERA. Verify at maharera.mahaonline.gov.in</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: Floor Plans ───────────────────────────── -->
+        <div class="pd-tab-panel" id="tab-floorplans" role="tabpanel" aria-labelledby="tab-btn-floorplans" hidden>
+          <div class="pd-section">
+            <h2 class="pd-section__title">Floor Plans</h2>
+            <div class="pd-floorplans-grid" id="pd-floorplans-grid">
+              <div class="empty-state">
+                <div class="empty-state__icon"><svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="3 20 8 3 12 15 16 9 20 20 3 20"/></svg></div>
+                <p class="empty-state__title">Floor Plans Coming Soon</p>
+                <p class="empty-state__desc">Contact us to receive detailed floor plan brochures.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: Gallery ───────────────────────────────── -->
+        <div class="pd-tab-panel" id="tab-gallery" role="tabpanel" aria-labelledby="tab-btn-gallery" hidden>
+          <div class="pd-section">
+            <h2 class="pd-section__title">Project Gallery</h2>
+            <div class="gallery-grid" id="pd-gallery-grid">
+              <div class="empty-state" style="grid-column:1/-1;">
+                <div class="empty-state__icon"><svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+                <p class="empty-state__title">Gallery Coming Soon</p>
+                <p class="empty-state__desc">Site photos will be uploaded shortly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: Amenities ────────────────────────────── -->
+        <div class="pd-tab-panel" id="tab-amenities" role="tabpanel" aria-labelledby="tab-btn-amenities" hidden>
+          <div class="pd-section">
+            <h2 class="pd-section__title">Amenities &amp; Features</h2>
+            <div class="grid grid--4 pd-amenities-grid" id="pd-amenities-grid">
+              <div class="empty-state" style="grid-column:1/-1;">
+                <div class="empty-state__icon"><svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <p class="empty-state__title">Amenities listed soon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: Location ─────────────────────────────── -->
+        <div class="pd-tab-panel" id="tab-location" role="tabpanel" aria-labelledby="tab-btn-location" hidden>
+          <div class="pd-section">
+            <h2 class="pd-section__title">Location &amp; Connectivity</h2>
+            <div class="pd-location-wrap">
+              <div class="pd-map-embed" id="pd-map-embed">
+                <!-- Map iframe injected by JS -->
+                <div class="empty-state">
+                  <div class="empty-state__icon"><svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                  <p class="empty-state__title">Location map coming soon</p>
+                </div>
+              </div>
+              <div class="pd-nearby" id="pd-nearby" hidden>
+                <h3 class="pd-nearby__title">Nearby Landmarks</h3>
+                <ul class="pd-nearby__list" id="pd-nearby-list"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.pd-content -->
+
+      <!-- ── RIGHT: Sticky sidebar ──────────────────────── -->
+      <aside class="pd-sidebar" aria-label="Enquiry and contact">
+
+        <!-- Price card -->
+        <div class="pd-price-card glass-card--bordered" id="pd-price-card">
+          <div class="pd-price-card__price" id="pd-sidebar-price">—</div>
+          <p class="pd-price-card__label">Starting Price</p>
+          <div class="pd-price-card__divider" aria-hidden="true"></div>
+          <div class="pd-price-card__actions">
+            <button class="btn btn--primary btn--full btn--round" id="enquiry-trigger-btn">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Send Enquiry
+            </button>
+            <button class="btn btn--secondary btn--full btn--round" id="brochure-btn">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download Brochure
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick contact -->
+        <div class="pd-contact-card">
+          <p class="pd-contact-card__label">Need help? Talk to our experts</p>
+          <a href="tel:+917276583404" class="pd-contact-link">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.59a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call Us
+          </a>
+          <a href="https://wa.me/917276583404" target="_blank" rel="noopener noreferrer" class="pd-contact-link pd-contact-link--whatsapp">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.847L.057 23.571a.5.5 0 0 0 .611.611l5.724-1.475A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 0 1-4.994-1.368l-.359-.213-3.723.958.975-3.607-.233-.37A9.784 9.784 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+            WhatsApp Us
+          </a>
+        </div>
+
+        <!-- Builder info -->
+        <div class="pd-builder-card">
+          <div class="pd-builder-card__logo" aria-hidden="true">SP</div>
+          <div>
+            <p class="pd-builder-card__name">Samarth Properties</p>
+            <p class="pd-builder-card__since">Trusted since 2012 · 61+ Projects</p>
+          </div>
+        </div>
+
+      </aside><!-- /.pd-sidebar -->
+
+    </div><!-- /.pd-layout -->
+
+    <!-- ══════════════════════════════════════════════════════
+         RELATED PROJECTS
+         ══════════════════════════════════════════════════════ -->
+    <section class="section pd-related" id="pd-related" hidden>
+      <div class="container">
+        <div class="section-header section-header--left">
+          <span class="section-eyebrow">Explore More</span>
+          <h2 class="section-title">Similar Projects</h2>
+        </div>
+        <div class="grid grid--3 reveal-stagger" id="related-grid"></div>
+        <div class="section-cta">
+          <a href="projects.html" class="btn btn--secondary btn--round">View All Projects</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         NOT FOUND STATE (shown if slug invalid)
+         ══════════════════════════════════════════════════════ -->
+    <div class="pd-not-found container" id="pd-not-found" hidden>
+      <div class="empty-state" style="padding:120px 20px;">
+        <div class="empty-state__icon">🏚️</div>
+        <p class="empty-state__title">Project Not Found</p>
+        <p class="empty-state__desc">The project you're looking for doesn't exist or may have been removed.</p>
+        <a href="projects.html" class="btn btn--primary btn--round" style="margin-top:8px;">Browse All Projects</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════
+       LIGHTBOX
+       ════════════════════════════════════════════════════════ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image gallery" hidden>
+    <button class="lightbox__close" id="lb-close" aria-label="Close gallery">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lb-prev" aria-label="Previous image">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="lightbox__img-wrap">
+      <img class="lightbox__img" id="lb-img" src="" alt="">
+    </div>
+    <button class="lightbox__nav lightbox__nav--next" id="lb-next" aria-label="Next image">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="lightbox__caption" id="lb-caption" aria-live="polite"></div>
+    <div class="lightbox__counter" id="lb-counter" aria-live="polite"></div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       BROCHURE MODAL
+       ════════════════════════════════════════════════════════ -->
+  <div class="modal" id="brochure-modal" role="dialog" aria-modal="true" aria-labelledby="brochure-modal-title">
+    <div class="modal__overlay" id="brochure-overlay"></div>
+    <div class="modal__box">
+      <div class="modal__header">
+        <h3 class="modal__title" id="brochure-modal-title">Download Project Brochure</h3>
+        <button class="modal__close" id="brochure-close" aria-label="Close">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p class="brochure-modal__desc">Enter your details to receive the brochure instantly.</p>
+        <form id="brochure-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="br-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="br-name" name="name" class="form-input" placeholder="Your full name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="br-phone">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="br-phone" name="phone" class="form-input" placeholder="Your mobile number" required autocomplete="tel">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="br-email">Email Address</label>
+            <input type="email" id="br-email" name="email" class="form-input" placeholder="you@email.com" autocomplete="email">
+          </div>
+          <button type="submit" class="btn btn--primary btn--full btn--round" id="brochure-submit-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Get Brochure Now
+          </button>
+          <p class="brochure-modal__note">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Your information is safe and never shared.
+          </p>
+        </form>
+        <!-- Success state -->
+        <div id="brochure-success" class="brochure-success" hidden>
+          <div class="brochure-success__icon">📥</div>
+          <h4 class="brochure-success__title">Brochure Ready!</h4>
+          <p class="brochure-success__msg">Your brochure is downloading. Our team will also reach out shortly.</p>
+          <button class="btn btn--secondary btn--round" id="brochure-done-btn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Compare bar -->
+  <div id="compare-bar-placeholder"></div>
+
+  <!-- WhatsApp FAB -->
+  <a href="https://wa.me/917276583404?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20this%20project"
+     class="whatsapp-fab" target="_blank" rel="noopener noreferrer"
+     aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.474 2.027 7.776L0 32l8.524-2.007A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.278 22.307c-.344.966-1.697 1.767-2.788 2c-.743.158-1.712.284-4.972-1.069-4.174-1.71-6.863-5.95-7.071-6.226-.2-.277-1.677-2.229-1.677-4.25s1.048-3.014 1.42-3.427c.373-.413.813-.516 1.084-.516.27 0 .541.003.778.014.25.012.585-.095.915.7.344.83 1.168 2.85 1.27 3.058.102.207.17.448.034.724-.136.277-.204.448-.407.69-.203.241-.427.539-.609.724-.203.207-.415.43-.179.844.237.413.1.054 2.079 3.36 1.363 2.278 2.554 2.98 2.9 3.148.347.168.547.14.749-.084.203-.224.863-.95 1.093-1.278.23-.327.457-.27.77-.162.313.107 1.988.937 2.33 1.107.34.17.567.254.65.396.083.143.083.83-.261 1.797z"/></svg>
+  </a>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/translate.js"></script>
+  <script src="../assets/js/project-detail.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+
+</body>
+</html>

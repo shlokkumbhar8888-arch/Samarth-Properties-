@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Post Form — Samarth Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="adm-body">
+
+  <div class="adm-layout">
+    <aside class="adm-sidebar" id="adm-sidebar"></aside>
+    <div class="adm-sidebar-overlay" id="adm-sidebar-overlay"></div>
+
+    <div class="adm-main">
+      <header class="adm-header" id="adm-header"></header>
+
+      <main class="adm-content">
+
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title" id="form-page-title">New Blog Post</h1>
+            <p class="adm-page-sub">Fields marked <span style="color:var(--adm-error)">*</span> are required.</p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <a href="blog.html" class="adm-btn adm-btn--secondary">← Back</a>
+            <button class="adm-btn adm-btn--secondary" id="save-draft-btn">Save Draft</button>
+            <button class="adm-btn adm-btn--primary" id="publish-btn">Publish</button>
+          </div>
+        </div>
+
+        <form id="blog-form" novalidate style="display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;">
+
+          <!-- Main content column -->
+          <div style="display:flex;flex-direction:column;gap:20px;">
+
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Post Content</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-title">Title <span class="req">*</span></label>
+                    <input type="text" id="bf-title" class="adm-input" placeholder="e.g. Why Bhor is Pune's Next Real Estate Hotspot" required>
+                  </div>
+
+                  <div class="adm-form-row">
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="bf-slug">URL Slug <span class="req">*</span></label>
+                      <input type="text" id="bf-slug" class="adm-input" placeholder="why-bhor-is-punes-next-hotspot" required>
+                      <p class="adm-field-hint" id="bf-slug-preview"></p>
+                    </div>
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="bf-category">Category</label>
+                      <input type="text" id="bf-category" class="adm-input" placeholder="e.g. Market Insights" list="bf-category-list">
+                      <datalist id="bf-category-list">
+                        <option value="Market Insights">
+                        <option value="Investment Tips">
+                        <option value="Legal & Documentation">
+                        <option value="Project Updates">
+                        <option value="NRI Guide">
+                        <option value="Lifestyle">
+                      </datalist>
+                    </div>
+                  </div>
+
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-excerpt">Excerpt / Summary <span class="req">*</span></label>
+                    <textarea id="bf-excerpt" class="adm-textarea" rows="3" placeholder="2–3 sentence summary shown on listing cards and search results…" required></textarea>
+                    <p class="adm-field-hint">Keep under 200 characters for best display.</p>
+                  </div>
+
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-content">Article Content <span class="req">*</span></label>
+                    <textarea id="bf-content" class="adm-textarea" rows="20"
+                      placeholder="Write article content here. Supports HTML markup.&#10;&#10;Use &lt;h2&gt; and &lt;h3&gt; for section headings (auto-generates Table of Contents).&#10;Use &lt;p&gt; for paragraphs, &lt;blockquote&gt; for callouts, &lt;ul&gt;/&lt;ol&gt; for lists.&#10;&#10;Plain text also supported — separate paragraphs with a blank line."
+                      required></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEO & Meta -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">SEO & Meta</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-meta-title">Meta Title</label>
+                    <input type="text" id="bf-meta-title" class="adm-input" placeholder="Defaults to post title if left blank">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-meta-desc">Meta Description</label>
+                    <textarea id="bf-meta-desc" class="adm-textarea" rows="2" placeholder="Defaults to excerpt if left blank (max 160 chars)"></textarea>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-tags">Tags</label>
+                    <input type="text" id="bf-tags" class="adm-input" placeholder="real estate, pune, investment (comma-separated)">
+                    <p class="adm-field-hint">Comma-separated list of tags.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right sidebar -->
+          <div style="display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(var(--adm-header-h) + 24px);">
+
+            <!-- Publish -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Publish</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form" style="gap:16px;">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-author">Author Name</label>
+                    <input type="text" id="bf-author" class="adm-input" placeholder="Samarth Properties" value="Samarth Properties">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-author-bio">Author Bio</label>
+                    <textarea id="bf-author-bio" class="adm-textarea" rows="2" placeholder="Short bio shown at end of article…"></textarea>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-read-time">Est. Read Time (mins)</label>
+                    <input type="number" id="bf-read-time" class="adm-input" placeholder="5" min="1" max="60">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="bf-published-at">Publish Date</label>
+                    <input type="datetime-local" id="bf-published-at" class="adm-input">
+                    <p class="adm-field-hint">Leave blank to use current time when publishing.</p>
+                  </div>
+                  <label class="adm-form-check">
+                    <input type="checkbox" id="bf-featured">
+                    <span class="adm-form-check__label">Mark as Featured post</span>
+                  </label>
+                  <button type="button" class="adm-btn adm-btn--primary adm-btn--full adm-btn--lg" id="publish-btn-side">Publish Now</button>
+                  <button type="button" class="adm-btn adm-btn--secondary adm-btn--full" id="save-draft-btn-side">Save as Draft</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cover image -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Cover Image</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="bf-cover">Cover Image URL</label>
+                  <input type="url" id="bf-cover" class="adm-input" placeholder="https://example.com/image.jpg">
+                </div>
+                <div id="bf-cover-preview" style="margin-top:12px;display:none;">
+                  <img id="bf-cover-img" src="" alt="Cover preview" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;background:var(--adm-bg);">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="assets/js/admin-core.js"></script>
+  <script src="assets/js/admin-translate.js"></script>
+  <script src="assets/js/blog-form.js"></script>
+</body>
+</html>

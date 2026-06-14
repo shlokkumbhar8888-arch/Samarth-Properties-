@@ -1,0 +1,636 @@
+/* ============================================================
+   SAMARTH PROPERTIES — Contact Page
+   File: frontend/assets/css/contact.css
+   Imports: main.css, components.css, animations.css, projects.css
+   ============================================================ */
+
+/* ── Page hero variant ──────────────────────────────────────── */
+.page-hero--contact {
+  background-image: linear-gradient(
+    135deg,
+    var(--navy) 0%,
+    #112040 60%,
+    #0d1f38 100%
+  );
+  min-height: 54vh;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Hero quick-contact chips ───────────────────────────────── */
+.contact-hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.contact-hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid rgba(201, 169, 110, 0.4);
+  border-radius: 100px;
+  color: var(--gold);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  background: rgba(201, 169, 110, 0.06);
+  transition: background 0.22s, border-color 0.22s, transform 0.18s;
+}
+
+.contact-hero-chip:hover {
+  background: rgba(201, 169, 110, 0.14);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.contact-hero-chip--wa {
+  border-color: rgba(37, 211, 102, 0.4);
+  color: #25d366;
+  background: rgba(37, 211, 102, 0.06);
+}
+
+.contact-hero-chip--wa:hover {
+  background: rgba(37, 211, 102, 0.14);
+  border-color: #25d366;
+}
+
+/* ── Info cards section ─────────────────────────────────────── */
+.contact-info-section {
+  padding: 72px 0;
+}
+
+.contact-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* ── Individual info card ───────────────────────────────────── */
+.contact-info-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 4px 24px rgba(10, 22, 40, 0.07);
+  border: 1px solid var(--border-light);
+  transition: transform 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(10, 22, 40, 0.11);
+}
+
+.contact-info-card__icon {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(201,169,110,0.1);
+  border: 1.5px solid rgba(201,169,110,0.35);
+  color: var(--gold-dark);
+  margin-bottom: 16px;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+.contact-info-card:hover .contact-info-card__icon {
+  transform: scale(1.08);
+  background: rgba(201,169,110,0.18);
+  border-color: rgba(201,169,110,0.55);
+}
+
+.contact-info-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.contact-info-card__body {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.contact-info-card__phone,
+.contact-info-card__email {
+  color: var(--navy);
+  text-decoration: none;
+  display: block;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.contact-info-card__phone:hover,
+.contact-info-card__email:hover {
+  color: var(--gold);
+}
+
+.contact-info-card__note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.contact-info-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gold);
+  font-size: 0.87rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 16px;
+  transition: gap 0.2s;
+}
+
+.contact-info-card__link:hover {
+  gap: 10px;
+}
+
+.contact-info-card__link--wa {
+  color: #25d366;
+}
+
+/* Office hours list */
+.contact-hours-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.contact-hours-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.contact-hours-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.contact-hours-item span:last-child {
+  font-weight: 500;
+  color: var(--navy);
+}
+
+/* ── Main contact grid ──────────────────────────────────────── */
+.contact-main-section {
+  padding-bottom: 96px;
+}
+
+.contact-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ── Form tabs ──────────────────────────────────────────────── */
+.contact-form-tabs {
+  display: flex;
+  background: var(--cream);
+  border-radius: 100px;
+  padding: 6px;
+  gap: 4px;
+  margin-bottom: 28px;
+  width: fit-content;
+}
+
+.contact-form-tab {
+  padding: 10px 24px;
+  border-radius: 100px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  font-family: var(--font-body);
+}
+
+.contact-form-tab--active,
+.contact-form-tab[aria-selected="true"] {
+  background: var(--navy);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(10, 22, 40, 0.15);
+}
+
+/* ── Form card ──────────────────────────────────────────────── */
+.contact-form-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 44px 40px;
+  box-shadow: 0 8px 48px rgba(10, 22, 40, 0.09);
+  border: 1px solid var(--border-light);
+}
+
+.contact-form-card__header {
+  margin-bottom: 32px;
+}
+
+.contact-form-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.contact-form-card__sub {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ── Form row (two columns) ─────────────────────────────────── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Required asterisk ──────────────────────────────────────── */
+.required {
+  color: #e53935;
+  margin-left: 2px;
+}
+
+/* ── Success state inside form card ────────────────────────── */
+.contact-form-success {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.contact-form-success__icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.contact-form-success__title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.contact-form-success__msg {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 320px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+}
+
+/* ── Map column ─────────────────────────────────────────────── */
+.contact-map-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 96px;
+}
+
+/* ── Map card ───────────────────────────────────────────────── */
+.contact-map-card {
+  background: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(10, 22, 40, 0.09);
+  border: 1px solid var(--border-light);
+}
+
+.contact-map-embed {
+  position: relative;
+  height: 300px;
+  background: #e8ecf0;
+}
+
+.contact-map-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.contact-map-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+}
+
+.contact-map-address {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.contact-map-address svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--gold);
+}
+
+/* ── Quick response guarantee card ─────────────────────────── */
+.contact-guarantee-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #1a3558 100%);
+  border-radius: 16px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  color: var(--white);
+}
+
+.contact-guarantee-card__icon {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(201,169,110,0.15);
+  border: 1.5px solid rgba(201,169,110,0.4);
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.contact-guarantee-card__title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.contact-guarantee-card__desc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Social card ────────────────────────────────────────────── */
+.contact-social-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #1a2e52 100%);
+  border-radius: 16px;
+  padding: 24px 24px 20px;
+  box-shadow: 0 8px 32px rgba(10, 22, 40, 0.18);
+  border: 1px solid rgba(201,169,110,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-social-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.contact-social-card__label {
+  font-size: 1rem;
+  color: var(--white);
+  font-weight: 700;
+  font-family: var(--font-serif);
+  letter-spacing: 0.01em;
+}
+
+.contact-social-card__sub {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.55);
+  margin: 0;
+}
+
+.contact-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.contact-social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s, transform 0.18s, color 0.2s;
+}
+
+.contact-social-link:hover {
+  transform: translateY(-2px);
+  color: var(--white);
+}
+
+.contact-social-link--fb     svg { color: #5a9df8; }
+.contact-social-link--ig     svg { color: #f06292; }
+.contact-social-link--yt     svg { color: #ff5252; }
+.contact-social-link--linkedin svg { color: #42a5f5; }
+
+.contact-social-link--fb:hover  { background: rgba(24,119,242,0.25); border-color: rgba(24,119,242,0.5); }
+.contact-social-link--ig:hover  { background: rgba(225,48,108,0.2);  border-color: rgba(225,48,108,0.5); }
+.contact-social-link--yt:hover  { background: rgba(255,0,0,0.2);     border-color: rgba(255,0,0,0.5);   }
+.contact-social-link--linkedin:hover { background: rgba(0,119,181,0.25); border-color: rgba(0,119,181,0.5); }
+
+.contact-social-link svg { flex-shrink: 0; }
+
+/* ── FAQ section ────────────────────────────────────────────── */
+.contact-faq-section {
+  padding: 80px 0 96px;
+}
+
+.contact-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 40px;
+  margin-top: 48px;
+}
+
+.contact-faq-item {
+  border-bottom: 1px solid var(--border-light);
+}
+
+.contact-faq-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--navy);
+  transition: color 0.2s;
+}
+
+.contact-faq-btn:hover {
+  color: var(--gold);
+}
+
+.contact-faq-btn[aria-expanded="true"] {
+  color: var(--gold);
+}
+
+.contact-faq-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+  color: var(--gold);
+}
+
+.contact-faq-btn[aria-expanded="true"] .contact-faq-icon {
+  transform: rotate(180deg);
+}
+
+.contact-faq-answer {
+  padding: 0 4px 20px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  animation: faq-open 0.22s ease;
+}
+
+@keyframes faq-open {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.contact-faq-answer p {
+  margin: 0;
+}
+
+/* ── WhatsApp FAB (consistent with other pages) ─────────────── */
+.whatsapp-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
+  z-index: 900;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.whatsapp-fab:hover {
+  transform: scale(1.09) translateY(-2px);
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.55);
+}
+
+.whatsapp-fab svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1200px) {
+  .contact-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-main-grid {
+    grid-template-columns: 1fr 380px;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 960px) {
+  .contact-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-map-col {
+    position: static;
+  }
+
+  .contact-faq-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form-card {
+    padding: 28px 20px;
+  }
+
+  .contact-form-tabs {
+    width: 100%;
+  }
+
+  .contact-form-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form-card__title {
+    font-size: 1.35rem;
+  }
+
+  .contact-map-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-hero-chips {
+    gap: 8px;
+  }
+
+  .contact-hero-chip {
+    font-size: 0.82rem;
+    padding: 8px 16px;
+  }
+
+  .contact-social-links {
+    gap: 6px;
+  }
+}

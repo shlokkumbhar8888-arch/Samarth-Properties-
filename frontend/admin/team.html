@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team — Samarth Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="adm-body">
+
+  <div class="adm-layout">
+    <aside class="adm-sidebar" id="adm-sidebar"></aside>
+    <div class="adm-sidebar-overlay" id="adm-sidebar-overlay"></div>
+
+    <div class="adm-main">
+      <header class="adm-header" id="adm-header"></header>
+
+      <main class="adm-content">
+
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Team Members</h1>
+            <p class="adm-page-sub" id="team-count">Loading…</p>
+          </div>
+          <button class="adm-btn adm-btn--primary" id="add-member-btn">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Member
+          </button>
+        </div>
+
+        <div class="adm-panel">
+          <div class="adm-table-wrap">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th style="width:56px;">Photo</th>
+                  <th>Name</th>
+                  <th>Designation</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Order</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="team-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Drawer -->
+  <div class="adm-drawer-backdrop" id="team-drawer-backdrop"></div>
+  <div class="adm-drawer" id="team-drawer" role="dialog" aria-modal="true" aria-labelledby="team-drawer-title">
+    <div class="adm-drawer__header">
+      <h2 class="adm-drawer__title" id="team-drawer-title">Add Team Member</h2>
+      <button class="adm-drawer__close" id="team-drawer-close" aria-label="Close">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="adm-drawer__body">
+      <form id="team-form" class="adm-form" novalidate>
+        <input type="hidden" id="tm-id">
+        <div class="adm-form-row">
+          <div class="adm-form-group">
+            <label class="adm-label" for="tm-name">Full Name <span class="req">*</span></label>
+            <input type="text" id="tm-name" class="adm-input" placeholder="Rajesh Samarth" required>
+          </div>
+          <div class="adm-form-group">
+            <label class="adm-label" for="tm-designation">Designation <span class="req">*</span></label>
+            <input type="text" id="tm-designation" class="adm-input" placeholder="Managing Director" required>
+          </div>
+        </div>
+        <div class="adm-form-row">
+          <div class="adm-form-group">
+            <label class="adm-label" for="tm-email">Email</label>
+            <input type="email" id="tm-email" class="adm-input" placeholder="rajesh@samarth.in" autocomplete="off">
+          </div>
+          <div class="adm-form-group">
+            <label class="adm-label" for="tm-phone">Phone</label>
+            <input type="tel" id="tm-phone" class="adm-input" placeholder="+91 98765 43210">
+          </div>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label" for="tm-bio">Bio / About</label>
+          <textarea id="tm-bio" class="adm-textarea" rows="3" placeholder="Brief professional bio…"></textarea>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label" for="tm-photo">Photo URL</label>
+          <input type="url" id="tm-photo" class="adm-input" placeholder="https://example.com/photo.jpg">
+        </div>
+        <div id="tm-photo-preview" style="display:none;margin-top:8px;">
+          <img id="tm-photo-img" src="" alt="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;background:var(--adm-bg);">
+        </div>
+        <div class="adm-form-row" style="margin-top:4px;">
+          <div class="adm-form-group">
+            <label class="adm-label" for="tm-linkedin">LinkedIn URL</label>
+            <input type="url" id="tm-linkedin" class="adm-input" placeholder="https://linkedin.com/in/…">
+          </div>
+          <div class="adm-form-group">
+            <label class="adm-label" for="tm-order">Display Order</label>
+            <input type="number" id="tm-order" class="adm-input" placeholder="1" min="1" value="1">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="adm-drawer__footer">
+      <button class="adm-btn adm-btn--secondary" id="team-drawer-cancel">Cancel</button>
+      <button class="adm-btn adm-btn--primary" id="team-save-btn">Save Member</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="assets/js/admin-core.js"></script>
+  <script src="assets/js/admin-translate.js"></script>
+  <script src="assets/js/team-admin.js"></script>
+</body>
+</html>

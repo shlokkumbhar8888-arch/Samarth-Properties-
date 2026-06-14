@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Samarth Properties</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="adm-login-body">
+
+  <div class="adm-login-card" role="main">
+    <div class="adm-login-logo">
+      <div class="adm-login-logo__mark">SP</div>
+      <div class="adm-login-logo__text">
+        <div class="adm-login-logo__title">Samarth Properties</div>
+        <div class="adm-login-logo__sub">Admin Panel</div>
+      </div>
+    </div>
+
+    <h1 class="adm-login-heading">Welcome Back</h1>
+    <p class="adm-login-sub">Sign in to manage your real estate portal</p>
+
+    <div id="login-error" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:6px;padding:10px 14px;font-size:.82rem;color:#f87171;margin-bottom:16px;"></div>
+
+    <form id="login-form" novalidate>
+      <div class="adm-login-group">
+        <label class="adm-login-label" for="login-email">Email Address</label>
+        <input type="email" id="login-email" class="adm-login-input"
+          placeholder="admin@samarthproperties.in"
+          autocomplete="email" required>
+        <p class="adm-login-error" id="err-email" style="display:none;"></p>
+      </div>
+
+      <div class="adm-login-group">
+        <label class="adm-login-label" for="login-password">Password</label>
+        <div style="position:relative;">
+          <input type="password" id="login-password" class="adm-login-input"
+            placeholder="••••••••"
+            autocomplete="current-password" required
+            style="padding-right:44px;">
+          <button type="button" id="toggle-pw"
+            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);display:flex;padding:4px;"
+            aria-label="Toggle password visibility">
+            <svg id="pw-eye" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="pw-eye-off" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <p class="adm-login-error" id="err-password" style="display:none;"></p>
+      </div>
+
+      <button type="submit" class="adm-login-btn" id="login-btn">
+        Sign In
+      </button>
+    </form>
+
+    <div class="adm-login-footer">
+      Samarth Properties &copy; 2024 &mdash; Restricted access
+    </div>
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script>
+    (function () {
+      // Redirect to dashboard if already logged in
+      if (localStorage.getItem('sp_token')) {
+        location.href = 'dashboard.html';
+      }
+
+      const form      = document.getElementById('login-form');
+      const emailEl   = document.getElementById('login-email');
+      const passwordEl= document.getElementById('login-password');
+      const btn       = document.getElementById('login-btn');
+      const errBox    = document.getElementById('login-error');
+      const errEmail  = document.getElementById('err-email');
+      const errPw     = document.getElementById('err-password');
+      const togglePw  = document.getElementById('toggle-pw');
+      const pwEye     = document.getElementById('pw-eye');
+      const pwEyeOff  = document.getElementById('pw-eye-off');
+
+      // Toggle password visibility
+      togglePw.addEventListener('click', () => {
+        const hidden = passwordEl.type === 'password';
+        passwordEl.type = hidden ? 'text' : 'password';
+        pwEye.style.display    = hidden ? 'none' : '';
+        pwEyeOff.style.display = hidden ? '' : 'none';
+      });
+
+      function showErr(el, msg) {
+        el.textContent = msg;
+        el.style.display = 'block';
+        el.previousElementSibling?.classList.add('error');
+      }
+
+      function clearErrs() {
+        [errEmail, errPw].forEach(e => { e.style.display = 'none'; e.textContent = ''; });
+        document.querySelectorAll('.adm-login-input').forEach(i => i.classList.remove('error'));
+        errBox.style.display = 'none';
+        errBox.textContent   = '';
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearErrs();
+
+        const email    = emailEl.value.trim();
+        const password = passwordEl.value;
+        let valid = true;
+
+        if (!email) { showErr(errEmail, 'Email is required'); valid = false; }
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr(errEmail, 'Enter a valid email'); valid = false; }
+        if (!password) { showErr(errPw, 'Password is required'); valid = false; }
+        if (!valid) return;
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="adm-login-spinner"></span> Signing in…';
+
+        try {
+          const res = await fetch(APP_CONFIG.API_BASE + '/admin/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: email, password }),
+          });
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            throw new Error(data.message || 'Invalid email or password');
+          }
+
+          // Store token and user
+          localStorage.setItem('sp_token', data.data?.token || data.token || '');
+          if (data.data?.user) {
+            localStorage.setItem('sp_admin_user', JSON.stringify(data.data.user));
+          }
+
+          location.href = 'dashboard.html';
+
+        } catch (err) {
+          errBox.textContent   = err.message || 'Login failed. Please try again.';
+          errBox.style.display = 'block';
+          btn.disabled         = false;
+          btn.textContent      = 'Sign In';
+        }
+      });
+
+      // Focus first field
+      emailEl.focus();
+    })();
+  </script>
+</body>
+</html>

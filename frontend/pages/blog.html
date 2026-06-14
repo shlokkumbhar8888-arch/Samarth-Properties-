@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Estate Insights — Samarth Properties Blog</title>
+  <meta name="description" content="Expert real estate advice, market updates, investment tips and project news from Samarth Properties — Pune's trusted real estate developer.">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="Real Estate Insights — Samarth Properties Blog">
+  <meta property="og:description" content="Market trends, investment guides, and property tips from Pune's real estate experts.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="../assets/images/og-image.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/projects.css">
+  <link rel="stylesheet" href="../assets/css/blog.css">
+</head>
+<body>
+
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__inner">
+      <div class="page-loader__logo">SP</div>
+      <div class="page-loader__bar"><div class="page-loader__progress"></div></div>
+    </div>
+  </div>
+
+  <div id="nav-placeholder"></div>
+
+  <main id="main-content">
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE HERO
+         ══════════════════════════════════════════════════════ -->
+    <section class="page-hero page-hero--blog" aria-label="Blog page header">
+      <div class="page-hero__bg" aria-hidden="true">
+        <div class="page-hero__overlay"></div>
+      </div>
+      <div class="container page-hero__inner">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html" class="breadcrumb__item">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Blog</span>
+        </nav>
+        <div class="page-hero__content" data-reveal="up">
+          <span class="section-eyebrow section-eyebrow--light">Real Estate Insights</span>
+          <h1 class="page-hero__title">
+            Knowledge to Guide<br>
+            <em>Smarter Investments</em>
+          </h1>
+          <p class="page-hero__desc">
+            Expert articles on Pune's property market, investment strategies, legal guides, and project announcements — written by our in-house team of real estate professionals.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         FEATURED POST
+         ══════════════════════════════════════════════════════ -->
+    <section class="blog-featured-wrap" id="blog-featured-wrap" aria-label="Featured article" hidden>
+      <div class="container">
+        <div class="blog-featured" id="blog-featured"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         FILTER + SEARCH
+         ══════════════════════════════════════════════════════ -->
+    <section class="blog-controls-wrap" aria-label="Blog filters">
+      <div class="container blog-controls">
+
+        <!-- Search -->
+        <div class="blog-search">
+          <label for="blog-search-input" class="sr-only">Search articles</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-wrap__icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="blog-search-input" class="form-input blog-search__input"
+              placeholder="Search articles…" autocomplete="off" aria-label="Search articles">
+          </div>
+          <button class="projects-search__clear" id="blog-search-clear" aria-label="Clear search" hidden>
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <!-- Sort -->
+        <div class="blog-sort">
+          <label for="blog-sort-select" class="sr-only">Sort articles</label>
+          <select id="blog-sort-select" class="form-select blog-sort__select" aria-label="Sort articles">
+            <option value="">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="popular">Most Popular</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Category pills -->
+      <div class="container blog-categories">
+        <div class="filter-pills" id="category-filters" role="group" aria-label="Filter by category">
+          <button class="filter-pill active" data-category="all">All Articles</button>
+          <button class="filter-pill" data-category="market-trends">Market Trends</button>
+          <button class="filter-pill" data-category="investment-tips">Investment Tips</button>
+          <button class="filter-pill" data-category="legal-guide">Legal Guide</button>
+          <button class="filter-pill" data-category="project-news">Project News</button>
+          <button class="filter-pill" data-category="lifestyle">Lifestyle</button>
+        </div>
+
+        <div class="blog-meta" id="blog-meta" aria-live="polite">
+          <span id="blog-results-count"></span>
+          <button class="btn btn--sm" id="blog-reset-filters" hidden>Clear Filters</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         BLOG GRID
+         ══════════════════════════════════════════════════════ -->
+    <section class="section blog-listing" aria-label="Articles">
+      <div class="container">
+        <div class="grid grid--3 reveal-stagger" id="blog-grid" aria-live="polite" aria-label="Articles list">
+          <!-- Skeletons -->
+          <div class="blog-card" aria-hidden="true">
+            <div class="skeleton" style="width:100%;aspect-ratio:16/9;"></div>
+            <div class="blog-card__body" style="gap:8px;display:flex;flex-direction:column;">
+              <div class="skeleton skeleton--text" style="width:35%;"></div>
+              <div class="skeleton skeleton--text" style="width:90%;height:1.2em;"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text" style="width:65%;"></div>
+            </div>
+          </div>
+          <div class="blog-card" aria-hidden="true">
+            <div class="skeleton" style="width:100%;aspect-ratio:16/9;"></div>
+            <div class="blog-card__body" style="gap:8px;display:flex;flex-direction:column;">
+              <div class="skeleton skeleton--text" style="width:35%;"></div>
+              <div class="skeleton skeleton--text" style="width:90%;height:1.2em;"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text" style="width:65%;"></div>
+            </div>
+          </div>
+          <div class="blog-card" aria-hidden="true">
+            <div class="skeleton" style="width:100%;aspect-ratio:16/9;"></div>
+            <div class="blog-card__body" style="gap:8px;display:flex;flex-direction:column;">
+              <div class="skeleton skeleton--text" style="width:35%;"></div>
+              <div class="skeleton skeleton--text" style="width:90%;height:1.2em;"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text" style="width:65%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="pagination" id="blog-pagination" aria-label="Articles pagination" hidden></nav>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         NEWSLETTER / CTA
+         ══════════════════════════════════════════════════════ -->
+    <section class="blog-newsletter section--dark" aria-label="Newsletter signup">
+      <div class="container blog-newsletter__inner">
+        <div class="blog-newsletter__content" data-reveal="left">
+          <span class="section-eyebrow section-eyebrow--light">Stay Updated</span>
+          <h2 class="blog-newsletter__title">Get Market Insights<br>Delivered to You</h2>
+          <p class="blog-newsletter__desc">Join 2,000+ investors and home-buyers who receive our weekly Pune property market roundup.</p>
+        </div>
+        <form class="blog-newsletter__form" id="newsletter-form" novalidate data-reveal="right">
+          <div class="blog-newsletter__fields">
+            <div class="form-group" style="flex:1;margin-bottom:0;">
+              <label for="nl-name" class="sr-only">Your name</label>
+              <input type="text" id="nl-name" name="name" class="form-input form-input--dark"
+                placeholder="Your Name" required autocomplete="name">
+            </div>
+            <div class="form-group" style="flex:1;margin-bottom:0;">
+              <label for="nl-phone" class="sr-only">Phone number</label>
+              <input type="tel" id="nl-phone" name="phone" class="form-input form-input--dark"
+                placeholder="Your mobile number" required autocomplete="tel">
+            </div>
+          </div>
+          <button type="submit" class="btn btn--primary btn--round" id="nl-submit-btn">
+            Subscribe — It's Free
+          </button>
+          <p class="blog-newsletter__note">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            No spam. Unsubscribe anytime.
+          </p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <div id="compare-bar-placeholder"></div>
+
+  <a href="https://wa.me/917276583404" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.474 2.027 7.776L0 32l8.524-2.007A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.278 22.307c-.344.966-1.697 1.767-2.788 2c-.743.158-1.712.284-4.972-1.069-4.174-1.71-6.863-5.95-7.071-6.226-.2-.277-1.677-2.229-1.677-4.25s1.048-3.014 1.42-3.427c.373-.413.813-.516 1.084-.516.27 0 .541.003.778.014.25.012.585-.095.915.7.344.83 1.168 2.85 1.27 3.058.102.207.17.448.034.724-.136.277-.204.448-.407.69-.203.241-.427.539-.609.724-.203.207-.415.43-.179.844.237.413.1.054 2.079 3.36 1.363 2.278 2.554 2.98 2.9 3.148.347.168.547.14.749-.084.203-.224.863-.95 1.093-1.278.23-.327.457-.27.77-.162.313.107 1.988.937 2.33 1.107.34.17.567.254.65.396.083.143.083.83-.261 1.797z"/></svg>
+  </a>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/translate.js"></script>
+  <script src="../assets/js/blog.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

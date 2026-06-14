@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Samarth Properties | Pune Real Estate</title>
+  <meta name="description" content="Explore all Samarth Properties projects — premium plots, farmhouses, villas and residential developments across Pune. Filter by type, location, and status.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Our Projects — Samarth Properties">
+  <meta property="og:description" content="Browse government-approved plot projects near Ranjangaon MIDC, Pune by Samarth Properties.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="../assets/images/og-image.jpg">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+  <link rel="stylesheet" href="../assets/css/projects.css">
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__inner">
+      <div class="page-loader__logo">SP</div>
+      <div class="page-loader__bar"><div class="page-loader__progress"></div></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div id="nav-placeholder"></div>
+
+  <main id="main-content">
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE HERO
+         ══════════════════════════════════════════════════════ -->
+    <section class="page-hero page-hero--projects" aria-label="Projects page header">
+      <div class="page-hero__bg" aria-hidden="true">
+        <div class="page-hero__overlay"></div>
+      </div>
+      <div class="container page-hero__inner">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html" class="breadcrumb__item">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Projects</span>
+        </nav>
+        <div class="page-hero__content" data-reveal="up">
+          <span class="section-eyebrow section-eyebrow--light">Our Portfolio</span>
+          <h1 class="page-hero__title">
+            Discover Premium<br>
+            <em>Real Estate</em> in Pune
+          </h1>
+          <p class="page-hero__desc">
+            Planned R Zone plots near Ranjangaon, Karegaon, Karade MIDC — explore every opportunity crafted by Samarth Properties.
+          </p>
+        </div>
+        <!-- Hero quick stats -->
+        <div class="page-hero__stats" data-reveal="up" style="--reveal-delay:0.15s;">
+          <div class="page-hero__stat">
+            <strong class="page-hero__stat-num" id="stat-total">—</strong>
+            <span class="page-hero__stat-label">Total Projects</span>
+          </div>
+          <div class="page-hero__stat-sep" aria-hidden="true"></div>
+          <div class="page-hero__stat">
+            <strong class="page-hero__stat-num">5+</strong>
+            <span class="page-hero__stat-label">Project Types</span>
+          </div>
+          <div class="page-hero__stat-sep" aria-hidden="true"></div>
+          <div class="page-hero__stat">
+            <strong class="page-hero__stat-num">Ranjangaon, Pune</strong>
+            <span class="page-hero__stat-label">Locations</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         FILTERS + SEARCH BAR
+         ══════════════════════════════════════════════════════ -->
+    <section class="projects-controls-wrap" aria-label="Project filters">
+      <div class="container">
+        <div class="projects-controls">
+
+          <!-- Search -->
+          <div class="projects-search">
+            <label for="project-search" class="sr-only">Search projects</label>
+            <div class="form-input-wrap">
+              <svg class="form-input-wrap__icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="project-search" class="form-input projects-search__input"
+                placeholder="Search projects, locations…" autocomplete="off"
+                aria-label="Search projects">
+            </div>
+            <button class="projects-search__clear" id="search-clear" aria-label="Clear search" hidden>
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <!-- View toggle -->
+          <div class="projects-view-toggle" role="group" aria-label="View mode">
+            <button class="view-toggle-btn view-toggle-btn--active" id="view-grid" aria-pressed="true" title="Grid view">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </button>
+            <button class="view-toggle-btn" id="view-list" aria-pressed="false" title="List view">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
+          </div>
+
+          <!-- Sort -->
+          <div class="projects-sort">
+            <label for="sort-select" class="sr-only">Sort projects</label>
+            <select id="sort-select" class="form-select projects-sort__select" aria-label="Sort projects">
+              <option value="">Sort: Featured</option>
+              <option value="newest">Newest First</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="name_asc">Name: A–Z</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Type filter pills -->
+        <div class="projects-filters" role="group" aria-label="Filter by type">
+          <div class="filter-pills" id="type-filters">
+            <button class="filter-pill active" data-type="all">All Types</button>
+            <button class="filter-pill" data-type="plots">
+              <span class="filter-pill__dot filter-pill__dot--plots" aria-hidden="true"></span>
+              Plots
+            </button>
+            <button class="filter-pill" data-type="residential">
+              <span class="filter-pill__dot filter-pill__dot--residential" aria-hidden="true"></span>
+              Residential
+            </button>
+            <button class="filter-pill" data-type="villa">
+              <span class="filter-pill__dot filter-pill__dot--villa" aria-hidden="true"></span>
+              Villa
+            </button>
+            <button class="filter-pill" data-type="commercial">
+              <span class="filter-pill__dot filter-pill__dot--commercial" aria-hidden="true"></span>
+              Commercial
+            </button>
+            <button class="filter-pill" data-type="apartment">
+              <span class="filter-pill__dot filter-pill__dot--apartment" aria-hidden="true"></span>
+              Apartment
+            </button>
+          </div>
+
+          <!-- Status pills — populated dynamically by projects.js -->
+          <div class="filter-pills" id="status-filters">
+            <button class="filter-pill active" data-status="all">All Status</button>
+            <button class="filter-pill" data-status="available" hidden>Available</button>
+            <button class="filter-pill" data-status="ongoing" hidden>Ongoing</button>
+            <button class="filter-pill" data-status="completed" hidden>Completed</button>
+          </div>
+        </div>
+
+        <!-- Active filter summary + result count -->
+        <div class="projects-meta" id="projects-meta" aria-live="polite" aria-atomic="true">
+          <span class="projects-meta__count" id="results-count"></span>
+          <div class="projects-meta__active" id="active-filters"></div>
+          <button class="projects-meta__reset btn btn--sm" id="reset-filters" hidden>
+            Clear All Filters
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         PROJECTS GRID
+         ══════════════════════════════════════════════════════ -->
+    <section class="projects-listing section" aria-label="Projects listing">
+      <div class="container">
+
+        <!-- Grid / List container -->
+        <div class="projects-grid grid grid--3 reveal-stagger" id="projects-grid" aria-live="polite" aria-label="Projects">
+          <!-- Skeleton placeholders — shown immediately -->
+          <div class="project-card project-card--skeleton">
+            <div class="skeleton skeleton--img"></div>
+            <div class="project-card__body"><div class="skeleton skeleton--title" style="margin-bottom:12px;"></div><div class="skeleton skeleton--text" style="width:80%;"></div><div class="skeleton skeleton--text"></div></div>
+          </div>
+          <div class="project-card project-card--skeleton">
+            <div class="skeleton skeleton--img"></div>
+            <div class="project-card__body"><div class="skeleton skeleton--title" style="margin-bottom:12px;"></div><div class="skeleton skeleton--text" style="width:80%;"></div><div class="skeleton skeleton--text"></div></div>
+          </div>
+          <div class="project-card project-card--skeleton">
+            <div class="skeleton skeleton--img"></div>
+            <div class="project-card__body"><div class="skeleton skeleton--title" style="margin-bottom:12px;"></div><div class="skeleton skeleton--text" style="width:80%;"></div><div class="skeleton skeleton--text"></div></div>
+          </div>
+          <div class="project-card project-card--skeleton">
+            <div class="skeleton skeleton--img"></div>
+            <div class="project-card__body"><div class="skeleton skeleton--title" style="margin-bottom:12px;"></div><div class="skeleton skeleton--text" style="width:80%;"></div><div class="skeleton skeleton--text"></div></div>
+          </div>
+          <div class="project-card project-card--skeleton">
+            <div class="skeleton skeleton--img"></div>
+            <div class="project-card__body"><div class="skeleton skeleton--title" style="margin-bottom:12px;"></div><div class="skeleton skeleton--text" style="width:80%;"></div><div class="skeleton skeleton--text"></div></div>
+          </div>
+          <div class="project-card project-card--skeleton">
+            <div class="skeleton skeleton--img"></div>
+            <div class="project-card__body"><div class="skeleton skeleton--title" style="margin-bottom:12px;"></div><div class="skeleton skeleton--text" style="width:80%;"></div><div class="skeleton skeleton--text"></div></div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="pagination" id="pagination" aria-label="Projects pagination" hidden></nav>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         ENQUIRY CTA BANNER
+         ══════════════════════════════════════════════════════ -->
+    <section class="enquiry-banner section--dark" aria-label="Contact us">
+      <div class="container enquiry-banner__inner">
+        <div class="enquiry-banner__content" data-reveal="left">
+          <span class="section-eyebrow section-eyebrow--light">Get in Touch</span>
+          <h2 class="enquiry-banner__title">Can't Find What You're Looking For?</h2>
+          <p class="enquiry-banner__desc">Tell us your requirements and our experts will match you with the perfect property.</p>
+        </div>
+        <div class="enquiry-banner__actions" data-reveal="right">
+          <a href="contact.html" class="btn btn--primary btn--round">Send an Enquiry</a>
+          <a href="tel:+917276583404" class="btn btn--ghost btn--round">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.59a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call Now
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Enquiry popup (injected by main.js) -->
+  <div id="enquiry-popup-placeholder"></div>
+
+  <!-- Compare bar (injected by main.js) -->
+  <div id="compare-bar-placeholder"></div>
+
+  <!-- WhatsApp FAB -->
+  <a href="https://wa.me/917276583404?text=Hi%2C%20I%27m%20interested%20in%20your%20projects"
+     class="whatsapp-fab" target="_blank" rel="noopener noreferrer"
+     aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.474 2.027 7.776L0 32l8.524-2.007A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.278 22.307c-.344.966-1.697 1.767-2.788 2c-.743.158-1.712.284-4.972-1.069-4.174-1.71-6.863-5.95-7.071-6.226-.2-.277-1.677-2.229-1.677-4.25s1.048-3.014 1.42-3.427c.373-.413.813-.516 1.084-.516.27 0 .541.003.778.014.25.012.585-.095.915.7.344.83 1.168 2.85 1.27 3.058.102.207.17.448.034.724-.136.277-.204.448-.407.69-.203.241-.427.539-.609.724-.203.207-.415.43-.179.844.237.413.1.054 2.079 3.36 1.363 2.278 2.554 2.98 2.9 3.148.347.168.547.14.749-.084.203-.224.863-.95 1.093-1.278.23-.327.457-.27.77-.162.313.107 1.988.937 2.33 1.107.34.17.567.254.65.396.083.143.083.83-.261 1.797z"/>
+    </svg>
+  </a>
+
+  <!-- Scripts (depth = 1, so prefix = ../) -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/translate.js"></script>
+  <script src="../assets/js/projects.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+
+</body>
+</html>

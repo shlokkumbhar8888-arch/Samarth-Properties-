@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Form — Samarth Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <style>
+    .mp-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      z-index: 1200;
+      align-items: center;
+      justify-content: center;
+    }
+    .mp-overlay.open { display: flex; }
+    .mp-modal {
+      background: var(--adm-card);
+      border: 1px solid var(--adm-border);
+      border-radius: 14px;
+      width: min(900px, 94vw);
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .mp-modal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--adm-border);
+      flex-shrink: 0;
+    }
+    .mp-modal__title { font-size: 1rem; font-weight: 600; }
+    .mp-modal__close {
+      width: 30px; height: 30px;
+      border-radius: 6px;
+      background: transparent;
+      border: 1px solid var(--adm-border);
+      color: var(--adm-text);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mp-modal__toolbar {
+      padding: 12px 20px;
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--adm-border);
+      flex-shrink: 0;
+    }
+    .mp-modal__body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+    }
+    .mp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .mp-item {
+      border: 2px solid var(--adm-border);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color .15s, transform .15s;
+      position: relative;
+    }
+    .mp-item:hover { border-color: var(--adm-gold); transform: translateY(-1px); }
+    .mp-item.selected { border-color: var(--adm-gold); }
+    .mp-item.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 6px; right: 6px;
+      width: 22px; height: 22px;
+      background: var(--adm-gold);
+      color: var(--adm-navy);
+      border-radius: 50%;
+      font-size: .75rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mp-item img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+    .mp-item__name {
+      padding: 5px 7px;
+      font-size: .67rem;
+      color: var(--adm-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background: var(--adm-card);
+    }
+    .mp-modal__footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--adm-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .mp-selected-count { font-size: .82rem; color: var(--adm-text-muted); }
+    .mp-upload-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(201,169,110,.06);
+      border-bottom: 1px solid var(--adm-border);
+      flex-shrink: 0;
+    }
+    .mp-upload-row input[type=file] { display: none; }
+
+    /* Gallery preview thumbs */
+    .gp-thumb {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--adm-border);
+      flex-shrink: 0;
+    }
+    .gp-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gp-remove {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(239,68,68,.9);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: .6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      padding: 0;
+    }
+    .gp-remove:hover { background: #ef4444; }
+
+    /* Cover image clear button */
+    .cv-clear {
+      position: absolute;
+      top: 6px; right: 6px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(239,68,68,.9);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: .65rem;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1; padding: 0;
+    }
+    .cv-clear:hover { background: #ef4444; }
+
+    /* Video preview card */
+    .vp-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--adm-bg);
+      border: 1px solid var(--adm-border);
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .vp-card__icon { color: var(--adm-gold); flex-shrink: 0; }
+    .vp-card__name { font-size: .8rem; flex: 1; word-break: break-all; color: var(--adm-text); }
+    .vp-card__remove {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(239,68,68,.9);
+      color: #fff; border: none; cursor: pointer;
+      font-size: .65rem; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0;
+    }
+    .vp-card__remove:hover { background: #ef4444; }
+  </style>
+</head>
+<body class="adm-body">
+
+  <div class="adm-layout">
+    <aside class="adm-sidebar" id="adm-sidebar"></aside>
+    <div class="adm-sidebar-overlay" id="adm-sidebar-overlay"></div>
+
+    <div class="adm-main">
+      <header class="adm-header" id="adm-header"></header>
+
+      <main class="adm-content">
+
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title" id="form-page-title">Add Project</h1>
+            <p class="adm-page-sub">Fill in project details. Fields marked <span style="color:var(--adm-error)">*</span> are required.</p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <a href="projects.html" class="adm-btn adm-btn--secondary">← Back</a>
+            <button class="adm-btn adm-btn--primary" id="save-btn" form="project-form">Save Project</button>
+          </div>
+        </div>
+
+        <form id="project-form" novalidate style="display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;">
+
+          <!-- Left column -->
+          <div style="display:flex;flex-direction:column;gap:20px;">
+
+            <!-- Basic info -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Basic Information</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form">
+                  <div class="adm-form-row">
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-name">Project Name <span class="req">*</span></label>
+                      <input type="text" id="pf-name" class="adm-input" placeholder="e.g. Samarth Green Valley" required>
+                    </div>
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-slug">URL Slug <span class="req">*</span></label>
+                      <input type="text" id="pf-slug" class="adm-input" placeholder="samarth-green-valley" required>
+                      <p class="adm-field-hint" id="slug-preview"></p>
+                    </div>
+                  </div>
+
+                  <div class="adm-form-row">
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-type">Project Type <span class="req">*</span></label>
+                      <select id="pf-type" class="adm-select-input" required>
+                        <option value="">Select type…</option>
+                        <option value="plots">Plots / Farmhouse</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="villa">Villa</option>
+                        <option value="apartment">Apartment</option>
+                      </select>
+                    </div>
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-status">Status <span class="req">*</span></label>
+                      <select id="pf-status" class="adm-select-input" required>
+                        <option value="">Select status…</option>
+                        <option value="available">Available</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="ongoing">Ongoing</option>
+                        <option value="completed">Completed</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-short-desc">Short Description</label>
+                    <textarea id="pf-short-desc" class="adm-textarea" rows="2" placeholder="2–3 sentence teaser shown on listing cards…"></textarea>
+                    <p class="adm-field-hint">Used in project listing cards. Keep under 150 characters.</p>
+                  </div>
+
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-description">Full Description</label>
+                    <textarea id="pf-description" class="adm-textarea" rows="5" placeholder="Full project description shown on the detail page…"></textarea>
+                  </div>
+
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-highlights">Project Highlights</label>
+                    <textarea id="pf-highlights" class="adm-textarea" rows="4" placeholder="One highlight per line:&#10;Clear title deeds&#10;Gated community&#10;24/7 security"></textarea>
+                    <p class="adm-field-hint">Enter one highlight per line.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Location</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form">
+                  <div class="adm-form-row">
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-city">City <span class="req">*</span></label>
+                      <input type="text" id="pf-city" class="adm-input" placeholder="e.g. Bhor, Pune" required>
+                    </div>
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-state">State</label>
+                      <input type="text" id="pf-state" class="adm-input" placeholder="Maharashtra" value="Maharashtra">
+                    </div>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-address">Full Address</label>
+                    <input type="text" id="pf-address" class="adm-input" placeholder="Village, Taluka, District, Pin code">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-map-url">Google Maps Embed URL</label>
+                    <input type="url" id="pf-map-url" class="adm-input" placeholder="https://maps.google.com/maps?q=...&output=embed">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pricing & Area -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Pricing & Area</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form">
+                  <div class="adm-form-row">
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-price-min">Price Min (₹)</label>
+                      <input type="number" id="pf-price-min" class="adm-input" placeholder="e.g. 500000" min="0">
+                    </div>
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-price-max">Price Max (₹)</label>
+                      <input type="number" id="pf-price-max" class="adm-input" placeholder="e.g. 1500000" min="0">
+                    </div>
+                  </div>
+                  <div class="adm-form-group" style="max-width:200px;">
+                    <label class="adm-label" for="pf-price-unit">Price Unit</label>
+                    <select id="pf-price-unit" class="adm-select-input">
+                      <option value="total">Total Price</option>
+                      <option value="sqft">Per Sq.ft.</option>
+                      <option value="per_plot">Per Plot</option>
+                      <option value="per_guntha">Per Guntha</option>
+                      <option value="per_acre">Per Acre</option>
+                    </select>
+                  </div>
+
+                  <div class="adm-form-row">
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-area-min">Area Min</label>
+                      <input type="number" id="pf-area-min" class="adm-input" placeholder="e.g. 1200" min="0">
+                    </div>
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-area-max">Area Max</label>
+                      <input type="number" id="pf-area-max" class="adm-input" placeholder="e.g. 3500" min="0">
+                    </div>
+                  </div>
+                  <div class="adm-form-group" style="max-width:200px;">
+                    <label class="adm-label" for="pf-area-unit">Area Unit</label>
+                    <select id="pf-area-unit" class="adm-select-input">
+                      <option value="sqft">Sq.ft.</option>
+                      <option value="sqm">Sq.m.</option>
+                      <option value="acres">Acres</option>
+                      <option value="guntha">Guntha</option>
+                      <option value="hectares">Hectares</option>
+                    </select>
+                  </div>
+
+                  <div class="adm-form-row">
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-total-units">Total Units / Plots</label>
+                      <input type="number" id="pf-total-units" class="adm-input" placeholder="e.g. 120" min="0">
+                    </div>
+                    <div class="adm-form-group">
+                      <label class="adm-label" for="pf-available-units">Available Units</label>
+                      <input type="number" id="pf-available-units" class="adm-input" placeholder="e.g. 45" min="0">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Amenities -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Amenities</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="pf-amenities">Amenities</label>
+                  <textarea id="pf-amenities" class="adm-textarea" rows="4" placeholder="One amenity per line:&#10;Swimming Pool&#10;Clubhouse&#10;24/7 Security&#10;Children's Play Area"></textarea>
+                  <p class="adm-field-hint">Enter one amenity per line. These appear as icons on the detail page.</p>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /left column -->
+
+          <!-- Right sidebar -->
+          <div style="display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(var(--adm-header-h) + 24px);">
+
+            <!-- Publish settings -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Publish Settings</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form" style="gap:16px;">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-rera">RERA Number</label>
+                    <input type="text" id="pf-rera" class="adm-input" placeholder="P52000012345">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-possession">Possession Date</label>
+                    <input type="date" id="pf-possession" class="adm-input">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="pf-builder">Builder / Developer Name</label>
+                    <input type="text" id="pf-builder" class="adm-input" placeholder="Samarth Properties">
+                  </div>
+                  <label class="adm-form-check">
+                    <input type="checkbox" id="pf-featured">
+                    <span class="adm-form-check__label">Mark as Featured (shown on homepage)</span>
+                  </label>
+                  <button type="submit" class="adm-btn adm-btn--primary adm-btn--full adm-btn--lg" id="save-btn-side">
+                    Save Project
+                  </button>
+                  <a href="projects.html" class="adm-btn adm-btn--secondary adm-btn--full">Cancel</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cover image -->
+            <div class="adm-panel">
+              <div class="adm-panel__header"><h2 class="adm-panel__title">Cover Image</h2></div>
+              <div class="adm-panel__body">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="pf-cover">Cover Image URL</label>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="url" id="pf-cover" class="adm-input" placeholder="https://…" style="flex:1;">
+                    <button type="button" class="adm-btn adm-btn--secondary adm-btn--sm" id="pf-cover-pick" title="Pick from Media Library">
+                      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      Pick
+                    </button>
+                  </div>
+                  <p class="adm-field-hint">Paste a URL or pick from your Media Library.</p>
+                </div>
+                <div id="pf-cover-preview" style="margin-top:12px;display:none;position:relative;">
+                  <img id="pf-cover-img" src="" alt="Cover preview" style="width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover;background:var(--adm-bg);">
+                  <button type="button" class="cv-clear" id="pf-cover-clear" title="Remove cover image">✕</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gallery images -->
+            <div class="adm-panel">
+              <div class="adm-panel__header" style="display:flex;align-items:center;justify-content:space-between;">
+                <h2 class="adm-panel__title">Gallery Images</h2>
+                <button type="button" class="adm-btn adm-btn--secondary adm-btn--sm" id="pf-gallery-pick">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  Pick from Media
+                </button>
+              </div>
+              <div class="adm-panel__body">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="pf-gallery">Gallery Image URLs</label>
+                  <textarea id="pf-gallery" class="adm-textarea" rows="5" placeholder="One URL per line — or use Pick from Media above"></textarea>
+                  <p class="adm-field-hint">One image URL per line. Selected images are appended automatically.</p>
+                </div>
+                <div id="pf-gallery-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+              </div>
+            </div>
+
+            <!-- Video -->
+            <div class="adm-panel">
+              <div class="adm-panel__header" style="display:flex;align-items:center;justify-content:space-between;">
+                <h2 class="adm-panel__title">Video</h2>
+                <button type="button" class="adm-btn adm-btn--secondary adm-btn--sm" id="pf-video-pick">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                  Pick from Media
+                </button>
+              </div>
+              <div class="adm-panel__body">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="pf-video-url">Video URL</label>
+                  <input type="url" id="pf-video-url" class="adm-input" placeholder="https://youtube.com/… or pick from media above">
+                  <p class="adm-field-hint">YouTube, Vimeo, or pick an uploaded video from your media library.</p>
+                </div>
+                <div id="pf-video-preview" style="display:none;">
+                  <div class="vp-card">
+                    <svg class="vp-card__icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                    <span class="vp-card__name" id="pf-video-name">video.mp4</span>
+                    <button type="button" class="vp-card__remove" id="pf-video-clear" title="Remove video">✕</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /right sidebar -->
+
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Media Picker Modal -->
+  <div class="mp-overlay" id="mp-overlay">
+    <div class="mp-modal">
+      <div class="mp-modal__header">
+        <span class="mp-modal__title" id="mp-title">Pick Image</span>
+        <button class="mp-modal__close" id="mp-close" aria-label="Close">✕</button>
+      </div>
+      <div class="mp-upload-row">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span style="font-size:.8rem;color:var(--adm-text-muted);">Upload new image directly:</span>
+        <button type="button" class="adm-btn adm-btn--secondary adm-btn--sm" id="mp-quick-upload-btn">Choose File</button>
+        <input type="file" id="mp-quick-file" accept="image/*">
+        <span id="mp-upload-status" style="font-size:.78rem;color:var(--adm-text-muted);"></span>
+      </div>
+      <div class="mp-modal__toolbar">
+        <div class="adm-search-wrap" style="flex:1;">
+          <svg class="adm-search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" class="adm-search-input" id="mp-search" placeholder="Search images…" autocomplete="off">
+        </div>
+        <select class="adm-select" id="mp-folder-filter" style="height:36px;width:auto;">
+          <option value="">All folders</option>
+          <option value="general">General</option>
+          <option value="projects">Projects</option>
+          <option value="blog">Blog</option>
+        </select>
+      </div>
+      <div class="mp-modal__body">
+        <div class="mp-grid" id="mp-grid"></div>
+        <div style="text-align:center;padding:12px;" id="mp-load-more-wrap" style="display:none;">
+          <button class="adm-btn adm-btn--secondary adm-btn--sm" id="mp-load-more">Load More</button>
+        </div>
+      </div>
+      <div class="mp-modal__footer">
+        <span class="mp-selected-count" id="mp-count">No items selected</span>
+        <div style="display:flex;gap:10px;">
+          <button class="adm-btn adm-btn--secondary adm-btn--sm" id="mp-cancel">Cancel</button>
+          <button class="adm-btn adm-btn--primary adm-btn--sm" id="mp-confirm" disabled>Use Selected</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="assets/js/admin-core.js"></script>
+  <script src="assets/js/admin-translate.js"></script>
+  <script src="assets/js/project-form.js"></script>
+  <script>
+  // ── Media Picker ──────────────────────────────────────────
+  (function mediaPicker() {
+    let mode       = 'single'; // 'single' | 'multi'
+    let onConfirm  = null;
+    let selected   = new Map(); // id → url
+    let mpPage     = 1;
+    let mpSearch   = '';
+    let mpFolder   = '';
+    let mpTimer    = null;
+    let mpFileType = 'image';
+
+    const overlay   = document.getElementById('mp-overlay');
+    const grid      = document.getElementById('mp-grid');
+    const closeBtn  = document.getElementById('mp-close');
+    const cancelBtn = document.getElementById('mp-cancel');
+    const confirmBtn= document.getElementById('mp-confirm');
+    const countEl   = document.getElementById('mp-count');
+    const searchEl  = document.getElementById('mp-search');
+    const folderEl  = document.getElementById('mp-folder-filter');
+    const loadMoreWrap = document.getElementById('mp-load-more-wrap');
+    const loadMoreBtn  = document.getElementById('mp-load-more');
+    const titleEl   = document.getElementById('mp-title');
+    const uploadBtn = document.getElementById('mp-quick-upload-btn');
+    const fileInput = document.getElementById('mp-quick-file');
+    const statusEl  = document.getElementById('mp-upload-status');
+
+    function open(options) {
+      mode       = options.mode     || 'single';
+      mpFileType = options.fileType || 'image';
+      onConfirm  = options.onConfirm;
+      selected   = new Map();
+      mpPage     = 1;
+      mpSearch   = '';
+      mpFolder   = '';
+      searchEl.value = '';
+      folderEl.value = '';
+      fileInput.accept = mpFileType === 'video' ? 'video/*' : 'image/*';
+      titleEl.textContent = mpFileType === 'video'
+        ? 'Pick Video'
+        : (mode === 'single' ? 'Pick Cover Image' : 'Pick Gallery Images');
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = mode === 'single' ? 'Use Image' : 'Add Selected (0)';
+      countEl.textContent = 'No items selected';
+      overlay.classList.add('open');
+      loadGrid(true);
+    }
+
+    function close() {
+      overlay.classList.remove('open');
+    }
+
+    closeBtn.addEventListener('click', close);
+    cancelBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+    confirmBtn.addEventListener('click', () => {
+      if (!onConfirm || !selected.size) return;
+      onConfirm(Array.from(selected.values()));
+      close();
+    });
+
+    searchEl.addEventListener('input', () => {
+      clearTimeout(mpTimer);
+      mpTimer = setTimeout(() => { mpSearch = searchEl.value.trim(); mpPage = 1; loadGrid(true); }, 350);
+    });
+
+    folderEl.addEventListener('change', () => { mpFolder = folderEl.value; mpPage = 1; loadGrid(true); });
+    loadMoreBtn.addEventListener('click', () => { mpPage++; loadGrid(false); });
+
+    async function loadGrid(replace) {
+      if (replace) { grid.innerHTML = '<div style="grid-column:1/-1;color:var(--adm-text-muted);font-size:.82rem;">Loading…</div>'; }
+      try {
+        const params = { file_type: mpFileType, page: mpPage, pageSize: 20 };
+        if (mpSearch) params.search = mpSearch;
+        if (mpFolder) params.folder = mpFolder;
+        const res   = await AdminAPI.media.list(params);
+        const items = res.data || [];
+        const meta  = res.pagination || {};
+
+        if (replace) grid.innerHTML = '';
+        if (!items.length && replace) {
+          const emptyMsg = mpFileType === 'video' ? 'No videos found. Upload one first.' : 'No images found. Upload some first.';
+          grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--adm-text-muted);">${emptyMsg}</div>`;
+          loadMoreWrap.style.display = 'none';
+          return;
+        }
+        items.forEach(item => grid.appendChild(makeItem(item)));
+        loadMoreWrap.style.display = mpPage < (meta.totalPages || 1) ? 'block' : 'none';
+      } catch {
+        if (replace) grid.innerHTML = '<div style="grid-column:1/-1;color:#f87171;font-size:.82rem;padding:20px;">Failed to load images.</div>';
+      }
+    }
+
+    function makeItem(item) {
+      const el = document.createElement('div');
+      el.className = 'mp-item' + (selected.has(item.id) ? ' selected' : '');
+      el.dataset.id  = item.id;
+      el.dataset.url = item.file_url;
+      const thumb = item.thumbnail_url || item.file_url;
+      const name  = (item.original_filename || item.filename || '').replace(/\.[^.]+$/, '');
+      const showVideoIcon = mpFileType === 'video' && !item.thumbnail_url;
+      const mediaHtml = showVideoIcon
+        ? `<div style="width:100%;aspect-ratio:1;background:var(--adm-bg);display:flex;align-items:center;justify-content:center;">
+             <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4">
+               <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+             </svg></div>`
+        : `<img src="${esc(thumb)}" alt="${esc(item.alt_text || name)}" loading="lazy">`;
+      el.innerHTML = `${mediaHtml}<div class="mp-item__name" title="${esc(item.original_filename || '')}">${esc(name.slice(0,20))}</div>`;
+      el.addEventListener('click', () => toggleItem(el, item));
+      return el;
+    }
+
+    function toggleItem(el, item) {
+      if (mode === 'single') {
+        grid.querySelectorAll('.mp-item.selected').forEach(e => e.classList.remove('selected'));
+        selected.clear();
+        el.classList.add('selected');
+        selected.set(item.id, item.file_url);
+      } else {
+        if (selected.has(item.id)) {
+          selected.delete(item.id);
+          el.classList.remove('selected');
+        } else {
+          selected.set(item.id, item.file_url);
+          el.classList.add('selected');
+        }
+      }
+      const n = selected.size;
+      confirmBtn.disabled = n === 0;
+      if (mode === 'single') {
+        countEl.textContent = n ? '1 image selected' : 'No items selected';
+        confirmBtn.textContent = 'Use Image';
+      } else {
+        countEl.textContent = n ? `${n} image${n > 1 ? 's' : ''} selected` : 'No items selected';
+        confirmBtn.textContent = `Add Selected (${n})`;
+      }
+    }
+
+    // Quick upload inside picker
+    uploadBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      fileInput.value = '';
+      statusEl.textContent = 'Uploading…';
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const uploadBucket = mpFileType === 'video' ? 'media' : 'projects';
+        const uploadFolder = mpFileType === 'video' ? 'videos' : 'projects';
+        fd.append('bucket', uploadBucket);
+        fd.append('folder', uploadFolder);
+        const token = Auth.getToken();
+        const res = await fetch(APP_CONFIG.API_BASE + '/media/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: fd,
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.message || 'Upload failed');
+        statusEl.textContent = 'Done!';
+        setTimeout(() => { statusEl.textContent = ''; }, 2000);
+        mpPage = 1;
+        loadGrid(true);
+      } catch (err) {
+        statusEl.textContent = 'Failed: ' + err.message;
+      }
+    });
+
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Wire up the project form buttons ─────────────────
+    document.getElementById('pf-cover-pick').addEventListener('click', () => {
+      open({
+        mode: 'single',
+        onConfirm: (urls) => {
+          const coverEl = document.getElementById('pf-cover');
+          coverEl.value = urls[0];
+          coverEl.dispatchEvent(new Event('input'));
+        },
+      });
+    });
+
+    document.getElementById('pf-gallery-pick').addEventListener('click', () => {
+      open({
+        mode: 'multi',
+        onConfirm: (urls) => {
+          const galleryEl = document.getElementById('pf-gallery');
+          const existing  = galleryEl.value.trim();
+          const newUrls   = urls.join('\n');
+          galleryEl.value = existing ? existing + '\n' + newUrls : newUrls;
+          galleryEl.dispatchEvent(new Event('input')); // triggers renderGalleryPreview in project-form.js
+        },
+      });
+    });
+
+    // ── Cover clear ───────────────────────────────────────────
+    document.getElementById('pf-cover-clear')?.addEventListener('click', () => {
+      const coverEl = document.getElementById('pf-cover');
+      coverEl.value = '';
+      coverEl.dispatchEvent(new Event('input'));
+    });
+
+    // ── Video preview helpers ─────────────────────────────────
+    function renderVideoPreview(url) {
+      const preview = document.getElementById('pf-video-preview');
+      const nameEl2 = document.getElementById('pf-video-name');
+      if (!preview) return;
+      if (url) {
+        nameEl2.textContent = url.split('/').pop().split('?')[0] || url;
+        preview.style.display = '';
+      } else {
+        preview.style.display = 'none';
+      }
+    }
+
+    document.getElementById('pf-video-url')?.addEventListener('input', (e) => {
+      renderVideoPreview(e.target.value.trim());
+    });
+
+    document.getElementById('pf-video-clear')?.addEventListener('click', () => {
+      const videoUrlEl = document.getElementById('pf-video-url');
+      videoUrlEl.value = '';
+      renderVideoPreview('');
+    });
+
+    document.getElementById('pf-video-pick')?.addEventListener('click', () => {
+      open({
+        mode: 'single',
+        fileType: 'video',
+        onConfirm: (urls) => {
+          const videoUrlEl = document.getElementById('pf-video-url');
+          videoUrlEl.value = urls[0];
+          renderVideoPreview(urls[0]);
+        },
+      });
+    });
+
+  })();
+  </script>
+</body>
+</html>

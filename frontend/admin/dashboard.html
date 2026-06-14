@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Samarth Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="adm-body">
+
+  <div class="adm-layout">
+    <aside class="adm-sidebar" id="adm-sidebar"></aside>
+    <div class="adm-sidebar-overlay" id="adm-sidebar-overlay"></div>
+
+    <div class="adm-main">
+      <header class="adm-header" id="adm-header"></header>
+
+      <main class="adm-content" id="adm-content">
+
+        <!-- Page header -->
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Dashboard</h1>
+            <p class="adm-page-sub">Overview of your real estate portal activity</p>
+          </div>
+          <a href="projects.html" class="adm-btn adm-btn--primary">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Project
+          </a>
+        </div>
+
+        <!-- Stats grid -->
+        <div class="adm-stats-grid" id="stats-grid">
+          <!-- Populated by JS -->
+          <div class="adm-stat-card">
+            <div class="adm-stat-card__icon adm-stat-card__icon--navy">🏗️</div>
+            <div class="adm-stat-card__body">
+              <p class="adm-stat-card__label">Total Projects</p>
+              <p class="adm-stat-card__value" id="stat-projects"><span class="adm-skeleton" style="width:40px;height:1.5em;display:inline-block;"></span></p>
+            </div>
+          </div>
+          <div class="adm-stat-card">
+            <div class="adm-stat-card__icon adm-stat-card__icon--blue">✉️</div>
+            <div class="adm-stat-card__body">
+              <p class="adm-stat-card__label">Total Enquiries</p>
+              <p class="adm-stat-card__value" id="stat-enquiries"><span class="adm-skeleton" style="width:40px;height:1.5em;display:inline-block;"></span></p>
+              <p class="adm-stat-card__change adm-stat-card__change--up" id="stat-enquiries-open"></p>
+            </div>
+          </div>
+          <div class="adm-stat-card">
+            <div class="adm-stat-card__icon adm-stat-card__icon--green">📅</div>
+            <div class="adm-stat-card__body">
+              <p class="adm-stat-card__label">Appointments</p>
+              <p class="adm-stat-card__value" id="stat-appts"><span class="adm-skeleton" style="width:40px;height:1.5em;display:inline-block;"></span></p>
+              <p class="adm-stat-card__change adm-stat-card__change--up" id="stat-appts-pending"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary stats row -->
+        <div class="adm-stats-grid" id="stats-grid-2" style="grid-template-columns:repeat(4,1fr);margin-bottom:28px;">
+          <div class="adm-stat-card">
+            <div class="adm-stat-card__icon adm-stat-card__icon--amber">👥</div>
+            <div class="adm-stat-card__body">
+              <p class="adm-stat-card__label">Team Members</p>
+              <p class="adm-stat-card__value" id="stat-team"><span class="adm-skeleton" style="width:30px;height:1.5em;display:inline-block;"></span></p>
+            </div>
+          </div>
+          <div class="adm-stat-card">
+            <div class="adm-stat-card__icon adm-stat-card__icon--red">🔔</div>
+            <div class="adm-stat-card__body">
+              <p class="adm-stat-card__label">Open Leads</p>
+              <p class="adm-stat-card__value" id="stat-open-leads"><span class="adm-skeleton" style="width:30px;height:1.5em;display:inline-block;"></span></p>
+            </div>
+          </div>
+          <div class="adm-stat-card">
+            <div class="adm-stat-card__icon adm-stat-card__icon--gold">📅</div>
+            <div class="adm-stat-card__body">
+              <p class="adm-stat-card__label">Pending Visits</p>
+              <p class="adm-stat-card__value" id="stat-pending-visits"><span class="adm-skeleton" style="width:30px;height:1.5em;display:inline-block;"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two-column: Recent Enquiries + Recent Appointments -->
+        <div class="adm-two-col">
+
+          <!-- Recent Enquiries -->
+          <div class="adm-panel">
+            <div class="adm-panel__header">
+              <h2 class="adm-panel__title">Recent Enquiries</h2>
+              <a href="enquiries.html" class="adm-btn adm-btn--ghost adm-btn--sm">View all →</a>
+            </div>
+            <div class="adm-table-wrap">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-enquiries-tbody">
+                  <!-- JS fills this -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Appointments -->
+          <div class="adm-panel">
+            <div class="adm-panel__header">
+              <h2 class="adm-panel__title">Recent Appointments</h2>
+              <a href="appointments.html" class="adm-btn adm-btn--ghost adm-btn--sm">View all →</a>
+            </div>
+            <div class="adm-table-wrap">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-appts-tbody">
+                  <!-- JS fills this -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick links row -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;">
+          <a href="project-form.html" class="adm-btn adm-btn--secondary adm-btn--lg">+ Add Project</a>
+          <a href="enquiries.html?status=open"     class="adm-btn adm-btn--secondary adm-btn--lg">View Open Leads</a>
+          <a href="appointments.html?status=pending" class="adm-btn adm-btn--secondary adm-btn--lg">Pending Visits</a>
+        </div>
+
+      </main>
+    </div><!-- /.adm-main -->
+  </div><!-- /.adm-layout -->
+
+  <script src="../assets/js/config.js"></script>
+  <script src="assets/js/admin-core.js"></script>
+  <script src="assets/js/admin-translate.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

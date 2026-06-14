@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Samarth Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <style>
+    .cfg-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--adm-bg);
+      border-radius: var(--adm-radius);
+      padding: 6px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .cfg-tab {
+      padding: 8px 20px;
+      border-radius: calc(var(--adm-radius) - 2px);
+      border: none;
+      background: transparent;
+      color: var(--adm-text-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      font-family: var(--font-sans);
+      white-space: nowrap;
+    }
+    .cfg-tab.active {
+      background: var(--adm-white);
+      color: var(--adm-text);
+      box-shadow: var(--adm-shadow);
+    }
+    .cfg-tab:hover:not(.active) { background: rgba(255,255,255,.6); color: var(--adm-text); }
+
+    .cfg-section { display: none; }
+    .cfg-section.active { display: flex; flex-direction: column; gap: 20px; }
+
+    .cfg-panel-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--adm-muted);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--adm-border);
+    }
+
+    .cfg-save-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 24px;
+      border-top: 1px solid var(--adm-border);
+      background: var(--adm-white);
+    }
+
+    .cfg-save-status {
+      font-size: 0.82rem;
+      color: var(--adm-success);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .cfg-save-status.visible { opacity: 1; }
+
+    .adm-form-group--3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .hours-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--adm-border);
+      font-size: 0.85rem;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row label { color: var(--adm-text-sm); font-weight: 500; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--adm-border);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-row__label { font-size: 0.78rem; font-weight: 600; color: var(--adm-muted); text-transform: uppercase; }
+  </style>
+</head>
+<body class="adm-body">
+
+  <div class="adm-layout">
+    <aside class="adm-sidebar" id="adm-sidebar"></aside>
+    <div class="adm-sidebar-overlay" id="adm-sidebar-overlay"></div>
+
+    <div class="adm-main">
+      <header class="adm-header" id="adm-header"></header>
+
+      <main class="adm-content">
+
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Site Settings</h1>
+            <p class="adm-page-sub" id="cfg-load-status">Loading configuration…</p>
+          </div>
+        </div>
+
+        <!-- Section tabs -->
+        <div class="cfg-tabs" role="tablist" aria-label="Settings sections">
+          <button class="cfg-tab active" data-section="brand"    role="tab" aria-selected="true"  aria-controls="sec-brand">Brand</button>
+          <button class="cfg-tab"        data-section="contact"  role="tab" aria-selected="false" aria-controls="sec-contact">Contact & Office</button>
+          <button class="cfg-tab"        data-section="social"   role="tab" aria-selected="false" aria-controls="sec-social">Social Media</button>
+          <button class="cfg-tab"        data-section="homepage" role="tab" aria-selected="false" aria-controls="sec-homepage">Homepage Content</button>
+          <button class="cfg-tab"        data-section="about"    role="tab" aria-selected="false" aria-controls="sec-about">About Page</button>
+          <button class="cfg-tab"        data-section="seo"      role="tab" aria-selected="false" aria-controls="sec-seo">SEO & Analytics</button>
+        </div>
+
+        <!-- ════════════════════════════════════════
+             BRAND & IDENTITY
+             ════════════════════════════════════════ -->
+        <div class="cfg-section active" id="sec-brand">
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Brand & Identity</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Company information displayed site-wide</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-site-name">Site / Company Name</label>
+                    <input type="text" id="cfg-site-name" class="adm-input" data-config-key="brand.site_name" data-section="brand" placeholder="Samarth Properties">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-tagline">Tagline</label>
+                    <input type="text" id="cfg-tagline" class="adm-input" data-config-key="brand.tagline" data-section="brand" placeholder="Building Dreams, Cultivating Trust">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-founded">Founded Year</label>
+                    <input type="number" id="cfg-founded" class="adm-input" data-config-key="brand.founded_year" data-section="brand" placeholder="2010" min="1900" max="2099">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-rera-agency">Agency RERA Number</label>
+                    <input type="text" id="cfg-rera-agency" class="adm-input" data-config-key="brand.rera_agency" data-section="brand" placeholder="A51700001234">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-logo-light">Logo URL (light background)</label>
+                    <input type="url" id="cfg-logo-light" class="adm-input" data-config-key="brand.logo_light" data-section="brand" placeholder="https://…/logo-dark.svg">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-logo-dark">Logo URL (dark / navy background)</label>
+                    <input type="url" id="cfg-logo-dark" class="adm-input" data-config-key="brand.logo_dark" data-section="brand" placeholder="https://…/logo-white.svg">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-favicon">Favicon URL</label>
+                    <input type="url" id="cfg-favicon" class="adm-input" data-config-key="brand.favicon_url" data-section="brand" placeholder="https://…/favicon.svg">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-og-image">Default OG Image URL</label>
+                    <input type="url" id="cfg-og-image" class="adm-input" data-config-key="brand.og_image" data-section="brand" placeholder="https://…/og-image.jpg">
+                    <p class="adm-field-hint">Recommended: 1200×630px</p>
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-default-lang">Default Website Language</label>
+                    <select id="cfg-default-lang" class="adm-input" data-config-key="brand.default_language" data-section="brand">
+                      <option value="en">English</option>
+                      <option value="mr">मराठी (Marathi)</option>
+                    </select>
+                    <p class="adm-field-hint">Visitors who haven't chosen a language will see the site in this language by default.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cfg-save-bar">
+              <span class="cfg-save-status" id="saved-brand">✓ Saved</span>
+              <button class="adm-btn adm-btn--primary" onclick="window._cfg.save('brand')">Save Brand Settings</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════
+             CONTACT & OFFICE
+             ════════════════════════════════════════ -->
+        <div class="cfg-section" id="sec-contact">
+
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Phone & Email</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Contact details shown on the website and admin links</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-phone-primary">Primary Phone</label>
+                    <input type="tel" id="cfg-phone-primary" class="adm-input" data-config-key="contact.phone_primary" data-section="contact" placeholder="+91 98765 43210">
+                    <p class="adm-field-hint">Include country code. Used in nav, footer, and contact page.</p>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-phone-secondary">Secondary Phone</label>
+                    <input type="tel" id="cfg-phone-secondary" class="adm-input" data-config-key="contact.phone_secondary" data-section="contact" placeholder="+91 76543 21098">
+                  </div>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-whatsapp">WhatsApp Number (digits only, with country code)</label>
+                  <input type="text" id="cfg-whatsapp" class="adm-input" data-config-key="contact.whatsapp" data-section="contact" placeholder="919876543210">
+                  <p class="adm-field-hint">Used for wa.me/ links. No spaces or dashes. Example: 919876543210</p>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-email-primary">Primary Email</label>
+                    <input type="email" id="cfg-email-primary" class="adm-input" data-config-key="contact.email_primary" data-section="contact" placeholder="info@samarthproperties.in">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-email-sales">Sales Email</label>
+                    <input type="email" id="cfg-email-sales" class="adm-input" data-config-key="contact.email_sales" data-section="contact" placeholder="sales@samarthproperties.in">
+                  </div>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-email-nri">NRI Desk Email</label>
+                  <input type="email" id="cfg-email-nri" class="adm-input" data-config-key="contact.email_nri" data-section="contact" placeholder="nri@samarthproperties.in">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Office Address</h2></div>
+            <div class="adm-panel__body">
+              <div class="adm-form">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-address-line1">Address Line 1</label>
+                  <input type="text" id="cfg-address-line1" class="adm-input" data-config-key="contact.address_line1" data-section="contact" placeholder="Main Road, Bhor">
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-address-line2">Address Line 2</label>
+                  <input type="text" id="cfg-address-line2" class="adm-input" data-config-key="contact.address_line2" data-section="contact" placeholder="Near Bus Stand">
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-city">City</label>
+                    <input type="text" id="cfg-city" class="adm-input" data-config-key="contact.city" data-section="contact" placeholder="Bhor">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-district">District</label>
+                    <input type="text" id="cfg-district" class="adm-input" data-config-key="contact.district" data-section="contact" placeholder="Pune">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-state">State</label>
+                    <input type="text" id="cfg-state" class="adm-input" data-config-key="contact.state" data-section="contact" placeholder="Maharashtra">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-pincode">PIN Code</label>
+                    <input type="text" id="cfg-pincode" class="adm-input" data-config-key="contact.pincode" data-section="contact" placeholder="412206">
+                  </div>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-map-embed">Google Maps Embed URL</label>
+                  <input type="url" id="cfg-map-embed" class="adm-input" data-config-key="contact.map_embed_url" data-section="contact" placeholder="https://maps.google.com/maps?q=Bhor+Pune&output=embed">
+                  <p class="adm-field-hint">Must start with https://www.google.com/maps/embed?pb=… — Go to Google Maps → Share → Embed a map → copy the URL inside src="…". Short links (maps.app.goo.gl) do NOT work.</p>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-map-link">Google Maps Link (for "Get Directions" button)</label>
+                  <input type="url" id="cfg-map-link" class="adm-input" data-config-key="contact.map_link" data-section="contact" placeholder="https://maps.google.com/?q=Bhor+Pune+Maharashtra">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Business Hours</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Displayed on Contact page and footer</p>
+              <div class="hours-row" style="font-weight:600;color:var(--adm-text-sm);padding-bottom:8px;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;">
+                <span>Day</span><span>Opens</span><span>Closes</span>
+              </div>
+              <div class="hours-row">
+                <label>Monday – Friday</label>
+                <input type="text" class="adm-input" data-config-key="contact.hours_weekday_open"  data-section="contact" placeholder="9:00 AM" style="height:36px;">
+                <input type="text" class="adm-input" data-config-key="contact.hours_weekday_close" data-section="contact" placeholder="6:00 PM" style="height:36px;">
+              </div>
+              <div class="hours-row">
+                <label>Saturday</label>
+                <input type="text" class="adm-input" data-config-key="contact.hours_sat_open"  data-section="contact" placeholder="9:00 AM" style="height:36px;">
+                <input type="text" class="adm-input" data-config-key="contact.hours_sat_close" data-section="contact" placeholder="5:00 PM" style="height:36px;">
+              </div>
+              <div class="hours-row">
+                <label>Sunday</label>
+                <input type="text" class="adm-input" data-config-key="contact.hours_sun" data-section="contact" placeholder="By Appointment" style="height:36px;" colspan="2">
+                <span></span>
+              </div>
+            </div>
+            <div class="cfg-save-bar">
+              <span class="cfg-save-status" id="saved-contact">✓ Saved</span>
+              <button class="adm-btn adm-btn--primary" onclick="window._cfg.save('contact')">Save Contact Settings</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════
+             SOCIAL MEDIA
+             ════════════════════════════════════════ -->
+        <div class="cfg-section" id="sec-social">
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Social Media Links</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Profile URLs shown in footer and contact page</p>
+              <div class="adm-form">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-facebook">Facebook Page URL</label>
+                  <input type="url" id="cfg-facebook" class="adm-input" data-config-key="social.facebook" data-section="social" placeholder="https://facebook.com/samarthpropertiespune">
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-instagram">Instagram Profile URL</label>
+                  <input type="url" id="cfg-instagram" class="adm-input" data-config-key="social.instagram" data-section="social" placeholder="https://instagram.com/samarthpropertiespune">
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-youtube">YouTube Channel URL</label>
+                  <input type="url" id="cfg-youtube" class="adm-input" data-config-key="social.youtube" data-section="social" placeholder="https://youtube.com/@samarthproperties">
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-linkedin">LinkedIn Page URL</label>
+                  <input type="url" id="cfg-linkedin" class="adm-input" data-config-key="social.linkedin" data-section="social" placeholder="https://linkedin.com/company/samarthproperties">
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-twitter">Twitter / X Profile URL</label>
+                  <input type="url" id="cfg-twitter" class="adm-input" data-config-key="social.twitter" data-section="social" placeholder="https://x.com/samarthprops">
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-justdial">Just Dial / Sulekha URL</label>
+                  <input type="url" id="cfg-justdial" class="adm-input" data-config-key="social.justdial" data-section="social" placeholder="https://www.justdial.com/…">
+                </div>
+              </div>
+            </div>
+            <div class="cfg-save-bar">
+              <span class="cfg-save-status" id="saved-social">✓ Saved</span>
+              <button class="adm-btn adm-btn--primary" onclick="window._cfg.save('social')">Save Social Links</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════
+             HOMEPAGE CONTENT
+             ════════════════════════════════════════ -->
+        <div class="cfg-section" id="sec-homepage">
+
+          <!-- Hero section -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Hero Section</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Full-screen hero shown at the top of the homepage</p>
+              <div class="adm-form">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-hero-badge">Badge Text (small eyebrow)</label>
+                  <input type="text" id="cfg-hero-badge" class="adm-input" data-config-key="homepage.hero_badge" data-section="homepage" placeholder="Pune's Most Trusted Property Experts Since 2010">
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-hero-h1">Heading Line 1</label>
+                    <input type="text" id="cfg-hero-h1" class="adm-input" data-config-key="homepage.hero_heading_1" data-section="homepage" placeholder="Your Dream Property">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-hero-h2">Heading Line 2 (italic/gold)</label>
+                    <input type="text" id="cfg-hero-h2" class="adm-input" data-config-key="homepage.hero_heading_2" data-section="homepage" placeholder="Awaits in Bhor, Pune">
+                  </div>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-hero-sub">Subtext</label>
+                  <textarea id="cfg-hero-sub" class="adm-textarea" rows="2" data-config-key="homepage.hero_subtext" data-section="homepage" placeholder="Explore premium plots, farmhouses, and villas in Bhor's most sought-after locations."></textarea>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-hero-cta1">Primary CTA Text</label>
+                    <input type="text" id="cfg-hero-cta1" class="adm-input" data-config-key="homepage.hero_cta_text" data-section="homepage" placeholder="Explore Projects">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-hero-cta2">Secondary CTA Text</label>
+                    <input type="text" id="cfg-hero-cta2" class="adm-input" data-config-key="homepage.hero_cta2_text" data-section="homepage" placeholder="Book a Free Site Visit">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats strip -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Stats Strip</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">5 animated counters shown below the hero</p>
+              <div style="padding:4px 0;">
+                <div class="stat-row" style="border-bottom:1px solid var(--adm-border);padding-bottom:8px;margin-bottom:4px;">
+                  <span class="stat-row__label">#</span>
+                  <span style="font-size:.78rem;font-weight:600;color:var(--adm-muted);text-transform:uppercase;">Count / Value</span>
+                  <span style="font-size:.78rem;font-weight:600;color:var(--adm-muted);text-transform:uppercase;">Label</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 1</span>
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_1_value" data-section="homepage" placeholder="600+" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_1_label" data-section="homepage" placeholder="Happy Families" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 2</span>
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_2_value" data-section="homepage" placeholder="6+" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_2_label" data-section="homepage" placeholder="Years Experience" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 3</span>
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_3_value" data-section="homepage" placeholder="50+" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_3_label" data-section="homepage" placeholder="Projects Delivered" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 4</span>
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_4_value" data-section="homepage" placeholder="1000" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_4_label" data-section="homepage" placeholder="Sq.Ft. Developed" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 5</span>
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_5_value" data-section="homepage" placeholder="98%" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="homepage.stat_5_label" data-section="homepage" placeholder="Customer Satisfaction" style="height:36px;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- About section -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">About Snippet (Homepage)</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Short about section on the homepage (not the full About page)</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-about-eyebrow">Eyebrow Label</label>
+                    <input type="text" id="cfg-about-eyebrow" class="adm-input" data-config-key="homepage.about_eyebrow" data-section="homepage" placeholder="About Samarth Properties">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-about-title">Section Heading</label>
+                    <input type="text" id="cfg-about-title" class="adm-input" data-config-key="homepage.about_heading" data-section="homepage" placeholder="Bhor's Most Trusted Real Estate Developer">
+                  </div>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-about-body">Body Text</label>
+                  <textarea id="cfg-about-body" class="adm-textarea" rows="4" data-config-key="homepage.about_body" data-section="homepage" placeholder="Founded in 2010, Samarth Properties has been at the forefront of real estate development in Bhor, Pune…"></textarea>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-about-img">About Image URL</label>
+                    <input type="url" id="cfg-about-img" class="adm-input" data-config-key="homepage.about_image" data-section="homepage" placeholder="https://…/about-main.jpg">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-about-accent-img">Accent Image URL</label>
+                    <input type="url" id="cfg-about-accent-img" class="adm-input" data-config-key="homepage.about_accent_image" data-section="homepage" placeholder="https://…/about-accent.jpg">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA section -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">CTA Section (Bottom of Homepage)</h2></div>
+            <div class="adm-panel__body">
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-cta-heading">Heading</label>
+                    <input type="text" id="cfg-cta-heading" class="adm-input" data-config-key="homepage.cta_heading" data-section="homepage" placeholder="Ready to Find Your Perfect Property?">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-cta-sub">Subtext</label>
+                    <input type="text" id="cfg-cta-sub" class="adm-input" data-config-key="homepage.cta_subtext" data-section="homepage" placeholder="Schedule a free site visit and meet our team in Bhor.">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cfg-save-bar">
+              <span class="cfg-save-status" id="saved-homepage">✓ Saved</span>
+              <button class="adm-btn adm-btn--primary" onclick="window._cfg.save('homepage')">Save Homepage Content</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════
+             ABOUT PAGE CONTENT
+             ════════════════════════════════════════ -->
+        <div class="cfg-section" id="sec-about">
+
+          <!-- Page Hero -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">About Page Hero</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Text shown in the top hero banner of the About page</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Eyebrow Label</label>
+                    <input type="text" class="adm-input" data-config-key="about.hero_eyebrow" data-section="about" placeholder="Our Story">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Hero Title</label>
+                    <input type="text" class="adm-input" data-config-key="about.hero_title" data-section="about" placeholder="Building Dreams, Delivering Trust">
+                  </div>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label">Hero Description</label>
+                  <textarea class="adm-textarea" rows="2" data-config-key="about.hero_desc" data-section="about" placeholder="For over a decade, Samarth Properties has been transforming Pune's landscape…"></textarea>
+                </div>
+                <p class="cfg-panel-title" style="margin-top:16px;">Hero Quick Stats (4 badges in the banner)</p>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 1 Value</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat1_value" data-section="about" placeholder="2012">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 1 Label</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat1_label" data-section="about" placeholder="Founded">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 2 Value</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat2_value" data-section="about" placeholder="61+">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 2 Label</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat2_label" data-section="about" placeholder="Projects Completed">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 3 Value</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat3_value" data-section="about" placeholder="11K+">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 3 Label</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat3_label" data-section="about" placeholder="Happy Families">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 4 Value</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat4_value" data-section="about" placeholder="100%">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Stat 4 Label</label>
+                    <input type="text" class="adm-input" data-config-key="about.hstat4_label" data-section="about" placeholder="On-Time Delivery">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Story Section -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Our Story Section</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Content for the split-layout story section</p>
+              <div class="adm-form">
+                <div class="adm-form-group">
+                  <label class="adm-label">Section Heading</label>
+                  <input type="text" class="adm-input" data-config-key="about.story_heading" data-section="about" placeholder="A Legacy Built on Land &amp; Loyalty">
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label">Lead Paragraph (bold intro)</label>
+                  <textarea class="adm-textarea" rows="2" data-config-key="about.story_lead" data-section="about" placeholder="What began as a vision to make premium land ownership accessible…"></textarea>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label">Body Paragraph 1</label>
+                  <textarea class="adm-textarea" rows="3" data-config-key="about.story_body1" data-section="about" placeholder="Founded in Pune, Samarth Properties started with a simple conviction…"></textarea>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label">Body Paragraph 2</label>
+                  <textarea class="adm-textarea" rows="3" data-config-key="about.story_body2" data-section="about" placeholder="Our approach is rooted in transparency…"></textarea>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Main Story Image URL</label>
+                    <input type="url" class="adm-input" data-config-key="about.story_img_main" data-section="about" placeholder="https://images.unsplash.com/…">
+                    <p class="adm-field-hint">Tall portrait-format image (4:5 ratio recommended)</p>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Accent Image URL</label>
+                    <input type="url" class="adm-input" data-config-key="about.story_img_accent" data-section="about" placeholder="https://images.unsplash.com/…">
+                    <p class="adm-field-hint">Small overlay image (landscape, visible on desktop only)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Founder -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Founder Badge</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Badge that appears over the story image</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Founder Name</label>
+                    <input type="text" class="adm-input" data-config-key="about.founder_name" data-section="about" placeholder="Pritam Kumbhar">
+                    <p class="adm-field-hint">Initials are auto-generated from first and last name</p>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Title / Designation</label>
+                    <input type="text" class="adm-input" data-config-key="about.founder_title" data-section="about" placeholder="Founder &amp; Managing Director">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Pillars -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Key Pillars</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Three trust pillars shown below the story text</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Pillar 1 Title</label>
+                    <input type="text" class="adm-input" data-config-key="about.pillar1_title" data-section="about" placeholder="Legal Clarity">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Pillar 1 Description</label>
+                    <input type="text" class="adm-input" data-config-key="about.pillar1_desc" data-section="about" placeholder="Every title deed verified, NA orders in place…">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Pillar 2 Title</label>
+                    <input type="text" class="adm-input" data-config-key="about.pillar2_title" data-section="about" placeholder="After-Sale Support">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Pillar 2 Description</label>
+                    <input type="text" class="adm-input" data-config-key="about.pillar2_desc" data-section="about" placeholder="Dedicated relationship managers…">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Pillar 3 Title</label>
+                    <input type="text" class="adm-input" data-config-key="about.pillar3_title" data-section="about" placeholder="Prime Locations">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label">Pillar 3 Description</label>
+                    <input type="text" class="adm-input" data-config-key="about.pillar3_desc" data-section="about" placeholder="Curated sites near highways, schools…">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Strip -->
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Stats Strip</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Five achievement numbers on the dark stats bar</p>
+              <div class="adm-form">
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 1</span>
+                  <input type="text" class="adm-input" data-config-key="about.stat1_value" data-section="about" placeholder="61+" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="about.stat1_label" data-section="about" placeholder="Projects Delivered" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 2</span>
+                  <input type="text" class="adm-input" data-config-key="about.stat2_value" data-section="about" placeholder="11K+" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="about.stat2_label" data-section="about" placeholder="Families Served" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 3</span>
+                  <input type="text" class="adm-input" data-config-key="about.stat3_value" data-section="about" placeholder="10+ Yrs" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="about.stat3_label" data-section="about" placeholder="Industry Experience" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 4</span>
+                  <input type="text" class="adm-input" data-config-key="about.stat4_value" data-section="about" placeholder="100%" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="about.stat4_label" data-section="about" placeholder="On-Time Delivery" style="height:36px;">
+                </div>
+                <div class="stat-row">
+                  <span class="stat-row__label">Stat 5</span>
+                  <input type="text" class="adm-input" data-config-key="about.stat5_value" data-section="about" placeholder="500+" style="height:36px;">
+                  <input type="text" class="adm-input" data-config-key="about.stat5_label" data-section="about" placeholder="Plots Under Management" style="height:36px;">
+                </div>
+              </div>
+            </div>
+            <div class="cfg-save-bar">
+              <span class="cfg-save-status" id="saved-about">✓ Saved</span>
+              <button class="adm-btn adm-btn--primary" onclick="window._cfg.save('about')">Save About Page</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════
+             SEO & ANALYTICS
+             ════════════════════════════════════════ -->
+        <div class="cfg-section" id="sec-seo">
+
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">SEO Defaults</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Fallback values used when page-specific meta is not set</p>
+              <div class="adm-form">
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-title-template">Page Title Template</label>
+                  <input type="text" id="cfg-title-template" class="adm-input" data-config-key="seo.title_template" data-section="seo" placeholder="%s — Samarth Properties | Pune Real Estate">
+                  <p class="adm-field-hint">Use <code style="background:var(--adm-bg);padding:1px 5px;border-radius:3px;">%s</code> as the page name placeholder.</p>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-default-desc">Default Meta Description</label>
+                  <textarea id="cfg-default-desc" class="adm-textarea" rows="2" data-config-key="seo.default_description" data-section="seo" placeholder="Samarth Properties — Pune's trusted real estate developer. Explore premium plots, farmhouses, villas and residential projects in Bhor, Pune."></textarea>
+                  <p class="adm-field-hint">Keep under 160 characters for best search result display.</p>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-label" for="cfg-keywords">Default Keywords</label>
+                  <input type="text" id="cfg-keywords" class="adm-input" data-config-key="seo.default_keywords" data-section="seo" placeholder="real estate Pune, plots Bhor, farmhouse Pune, property investment Pune">
+                  <p class="adm-field-hint">Comma-separated. Modern search engines largely ignore keywords, but some aggregators use them.</p>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-canonical-base">Canonical Base URL</label>
+                    <input type="url" id="cfg-canonical-base" class="adm-input" data-config-key="seo.canonical_base" data-section="seo" placeholder="https://samarthproperties.in">
+                    <p class="adm-field-hint">No trailing slash. Used for canonical link tags.</p>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-robots">Default Robots</label>
+                    <select id="cfg-robots" class="adm-select-input" data-config-key="seo.robots" data-section="seo">
+                      <option value="index, follow">index, follow (recommended)</option>
+                      <option value="noindex, nofollow">noindex, nofollow</option>
+                      <option value="index, nofollow">index, nofollow</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Analytics & Tracking</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Add tracking IDs — scripts inject automatically into the frontend</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-ga-id">Google Analytics 4 Measurement ID</label>
+                    <input type="text" id="cfg-ga-id" class="adm-input" data-config-key="seo.ga4_id" data-section="seo" placeholder="G-XXXXXXXXXX">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-gtm-id">Google Tag Manager ID</label>
+                    <input type="text" id="cfg-gtm-id" class="adm-input" data-config-key="seo.gtm_id" data-section="seo" placeholder="GTM-XXXXXXX">
+                  </div>
+                </div>
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-fb-pixel">Facebook Pixel ID</label>
+                    <input type="text" id="cfg-fb-pixel" class="adm-input" data-config-key="seo.fb_pixel_id" data-section="seo" placeholder="1234567890123456">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-gsc-verify">Google Search Console Verification</label>
+                    <input type="text" id="cfg-gsc-verify" class="adm-input" data-config-key="seo.gsc_verification" data-section="seo" placeholder="meta tag content value">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-panel">
+            <div class="adm-panel__header"><h2 class="adm-panel__title">Structured Data (Schema.org)</h2></div>
+            <div class="adm-panel__body">
+              <p class="cfg-panel-title">Rich result hints for Google Search</p>
+              <div class="adm-form">
+                <div class="adm-form-row">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-schema-type">Organization Type</label>
+                    <select id="cfg-schema-type" class="adm-select-input" data-config-key="seo.schema_type" data-section="seo">
+                      <option value="RealEstateAgent">Real Estate Agent</option>
+                      <option value="LocalBusiness">Local Business</option>
+                      <option value="Organization">Organization</option>
+                    </select>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="cfg-price-range">Price Range (schema)</label>
+                    <input type="text" id="cfg-price-range" class="adm-input" data-config-key="seo.schema_price_range" data-section="seo" placeholder="₹₹₹">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cfg-save-bar">
+              <span class="cfg-save-status" id="saved-seo">✓ Saved</span>
+              <button class="adm-btn adm-btn--primary" onclick="window._cfg.save('seo')">Save SEO Settings</button>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="assets/js/admin-core.js"></script>
+  <script src="assets/js/admin-translate.js"></script>
+  <script src="assets/js/config-admin.js"></script>
+</body>
+</html>

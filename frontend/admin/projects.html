@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Samarth Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="adm-body">
+
+  <div class="adm-layout">
+    <aside class="adm-sidebar" id="adm-sidebar"></aside>
+    <div class="adm-sidebar-overlay" id="adm-sidebar-overlay"></div>
+
+    <div class="adm-main">
+      <header class="adm-header" id="adm-header"></header>
+
+      <main class="adm-content">
+
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Projects</h1>
+            <p class="adm-page-sub" id="projects-count">Loading…</p>
+          </div>
+          <a href="project-form.html" class="adm-btn adm-btn--primary">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Project
+          </a>
+        </div>
+
+        <!-- Filters -->
+        <div class="adm-panel" style="margin-bottom:20px;">
+          <div class="adm-panel__body" style="padding:16px 24px;">
+            <div class="adm-controls">
+              <div class="adm-search-wrap">
+                <svg class="adm-search-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="search" class="adm-search-input" id="proj-search" placeholder="Search projects…" autocomplete="off">
+              </div>
+              <select class="adm-select" id="proj-type">
+                <option value="">All types</option>
+                <option value="plots">Plots</option>
+                <option value="residential">Residential</option>
+                <option value="commercial">Commercial</option>
+                <option value="villa">Villa</option>
+                <option value="apartment">Apartment</option>
+              </select>
+              <select class="adm-select" id="proj-status">
+                <option value="">All status</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="upcoming">Upcoming</option>
+                <option value="completed">Completed</option>
+              </select>
+              <select class="adm-select" id="proj-sort">
+                <option value="created_at:desc">Newest first</option>
+                <option value="created_at:asc">Oldest first</option>
+                <option value="name:asc">Name A–Z</option>
+                <option value="name:desc">Name Z–A</option>
+              </select>
+              <button class="adm-btn adm-btn--ghost adm-btn--sm" id="proj-reset" style="display:none;">Reset</button>
+              <span class="adm-results-count" id="proj-results-count"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="adm-panel">
+          <div class="adm-table-wrap">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th style="width:50px;">Image</th>
+                  <th>Project</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>City</th>
+                  <th>Price</th>
+                  <th>Featured</th>
+                  <th>Added</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="projects-tbody"></tbody>
+            </table>
+          </div>
+          <div id="proj-pagination"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="assets/js/admin-core.js"></script>
+  <script src="assets/js/admin-translate.js"></script>
+  <script src="assets/js/projects-admin.js"></script>
+</body>
+</html>

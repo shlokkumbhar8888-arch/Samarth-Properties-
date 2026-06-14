@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonials — Samarth Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="adm-body">
+
+  <div class="adm-layout">
+    <aside class="adm-sidebar" id="adm-sidebar"></aside>
+    <div class="adm-sidebar-overlay" id="adm-sidebar-overlay"></div>
+
+    <div class="adm-main">
+      <header class="adm-header" id="adm-header"></header>
+
+      <main class="adm-content">
+
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Testimonials</h1>
+            <p class="adm-page-sub" id="test-count">Loading…</p>
+          </div>
+          <button class="adm-btn adm-btn--primary" id="add-test-btn">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Testimonial
+          </button>
+        </div>
+
+        <div class="adm-panel">
+          <div class="adm-table-wrap">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Designation</th>
+                  <th>Project</th>
+                  <th>Rating</th>
+                  <th>Review</th>
+                  <th>Featured</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="test-tbody"></tbody>
+            </table>
+          </div>
+          <div id="test-pagination"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Drawer -->
+  <div class="adm-drawer-backdrop" id="test-drawer-backdrop"></div>
+  <div class="adm-drawer" id="test-drawer" role="dialog" aria-modal="true" aria-labelledby="test-drawer-title">
+    <div class="adm-drawer__header">
+      <h2 class="adm-drawer__title" id="test-drawer-title">Add Testimonial</h2>
+      <button class="adm-drawer__close" id="test-drawer-close" aria-label="Close">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="adm-drawer__body">
+      <form id="test-form" class="adm-form" novalidate>
+        <input type="hidden" id="ts-id">
+        <div class="adm-form-row">
+          <div class="adm-form-group">
+            <label class="adm-label" for="ts-name">Client Name <span class="req">*</span></label>
+            <input type="text" id="ts-name" class="adm-input" placeholder="Priya Mehta" required>
+          </div>
+          <div class="adm-form-group">
+            <label class="adm-label" for="ts-designation">Designation / City</label>
+            <input type="text" id="ts-designation" class="adm-input" placeholder="Software Engineer, Pune">
+          </div>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label" for="ts-project">Project Name</label>
+          <input type="text" id="ts-project" class="adm-input" placeholder="e.g. Samarth Green Valley">
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-label" for="ts-review">Review <span class="req">*</span></label>
+          <textarea id="ts-review" class="adm-textarea" rows="4" placeholder="The team at Samarth Properties made our dream of owning a plot a reality…" required></textarea>
+        </div>
+        <div class="adm-form-row">
+          <div class="adm-form-group">
+            <label class="adm-label" for="ts-rating">Rating (1–5)</label>
+            <select id="ts-rating" class="adm-select-input">
+              <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+              <option value="4">⭐⭐⭐⭐ (4)</option>
+              <option value="3">⭐⭐⭐ (3)</option>
+              <option value="2">⭐⭐ (2)</option>
+              <option value="1">⭐ (1)</option>
+            </select>
+          </div>
+          <div class="adm-form-group">
+            <label class="adm-label" for="ts-photo">Photo URL</label>
+            <input type="url" id="ts-photo" class="adm-input" placeholder="https://…">
+          </div>
+        </div>
+        <label class="adm-form-check" style="margin-top:4px;">
+          <input type="checkbox" id="ts-featured">
+          <span class="adm-form-check__label">Mark as Featured (shown on homepage)</span>
+        </label>
+      </form>
+    </div>
+    <div class="adm-drawer__footer">
+      <button class="adm-btn adm-btn--secondary" id="test-drawer-cancel">Cancel</button>
+      <button class="adm-btn adm-btn--primary" id="test-save-btn">Save Testimonial</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="assets/js/admin-core.js"></script>
+  <script src="assets/js/admin-translate.js"></script>
+  <script src="assets/js/testimonials-admin.js"></script>
+</body>
+</html>
