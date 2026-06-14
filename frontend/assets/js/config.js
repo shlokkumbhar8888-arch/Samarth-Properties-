@@ -6,7 +6,7 @@
 const _isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const _API_BASE = _isLocal
   ? 'http://localhost:8080/api'
-  : 'https://YOUR-APP-NAME.onrender.com/api'; // ← Replace with your Render URL after deploying backend
+  : 'https://samarth-properties.onrender.com/api';
 
 const APP_CONFIG = Object.freeze({
   // ── API ─────────────────────────────────────────────────────
