@@ -429,9 +429,13 @@ h1, h2, h3, h4, h5, h6 {
   z-index: var(--z-sticky);
   backdrop-filter: blur(4px);
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--dur-slow);
 }
-.nav-overlay.visible { opacity: 1; }
+.nav-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 /* ════════════════════════════════════════════════════════════
    FOOTER
