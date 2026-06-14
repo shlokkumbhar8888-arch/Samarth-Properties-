@@ -9,7 +9,7 @@
   'use strict';
 
   const STORAGE_KEY  = 'sp_lang';
-  const SESSION_KEY  = 'sp_lang_asked';
+  const SESSION_KEY  = 'sp_lang_asked'; // stored in localStorage so popup only shows once ever
 
   // ── Cookie helpers ────────────────────────────────────────
   function setGoogCookie(lang) {
@@ -27,7 +27,7 @@
   // ── Set language, save preference, reload ─────────────────
   function setLang(lang) {
     localStorage.setItem(STORAGE_KEY, lang);
-    sessionStorage.setItem(SESSION_KEY, '1'); // don't show popup again this session
+    localStorage.setItem(SESSION_KEY, '1'); // don't show popup again this session
     if (lang === 'mr') {
       setGoogCookie('mr');
     } else {
@@ -110,7 +110,7 @@
     // Clicking backdrop dismisses and defaults to English
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) {
-        sessionStorage.setItem(SESSION_KEY, '1');
+        localStorage.setItem(SESSION_KEY, '1');
         overlay.remove();
         setLang('en');
       }
@@ -151,13 +151,13 @@
     setLang      : setLang,
     translateText: translateText,
     getCurrentLang: getCurrentLang,
-    resetLang    : function () { localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(SESSION_KEY); clearGoogCookie(); location.reload(); },
+    resetLang    : function () { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(SESSION_KEY); clearGoogCookie(); location.reload(); },
   };
 
   // ── Boot ──────────────────────────────────────────────────
   function boot() {
     var stored  = localStorage.getItem(STORAGE_KEY);
-    var asked   = sessionStorage.getItem(SESSION_KEY);
+    var asked   = localStorage.getItem(SESSION_KEY);
 
     // Apply stored language preference on every load
     if (stored === 'mr') {

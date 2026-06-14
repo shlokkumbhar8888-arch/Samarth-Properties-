@@ -898,9 +898,14 @@ body { top: 0 !important; }
   backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
-  opacity: 0; transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
-#sp-lang-popup-overlay.sp-lp-visible { opacity: 1; }
+#sp-lang-popup-overlay.sp-lp-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 #sp-lang-popup {
   background: var(--white);
   border-radius: 20px;
